@@ -12,11 +12,13 @@
       background: #111;
       color: #fff;
     }
+
     header {
       background: url('ani.gif') no-repeat center center/cover;
       padding: 2em 1em;
       text-align: center;
     }
+
     .logo-circle {
       width: 100px;
       height: 100px;
@@ -25,20 +27,24 @@
       border: 2px solid #fff;
       margin: 0 auto;
     }
+
     .logo-circle img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+
     .logo-text {
       font-family: 'Courier New', Courier, monospace;
       font-size: 16px;
       margin-top: 10px;
     }
+
     .search-bar-container {
       text-align: center;
       margin: 20px;
     }
+
     .search-bar {
       padding: 10px;
       width: 90%;
@@ -47,10 +53,12 @@
       border-radius: 5px;
       font-size: 16px;
     }
+
     .category-filters {
       text-align: center;
       margin-bottom: 20px;
     }
+
     .filter-btn {
       background: #333;
       color: #fff;
@@ -61,12 +69,14 @@
       border-radius: 4px;
       font-size: 14px;
     }
+
     .wallpapers {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 15px;
       padding: 20px;
     }
+
     .wallpaper-card {
       background: #1e1e1e;
       border-radius: 8px;
@@ -75,26 +85,39 @@
       transition: transform 0.2s;
       width: 100%;
     }
+
     .wallpaper-card:hover {
       transform: scale(1.03);
     }
+
     .wallpaper-card img {
       width: 100%;
       display: block;
       -webkit-user-drag: none;
       user-select: none;
       pointer-events: none;
+      filter: blur(2px);
+      transform: scale(1.02);
+      transition: filter 0.3s ease, transform 0.3s ease;
     }
+
+    .wallpaper-card img.loaded {
+      filter: none;
+      transform: none;
+    }
+
     .wallpaper-title,
     .wallpaper-category {
       text-align: center;
       font-size: 14px;
       padding: 8px 0;
     }
+
     .wallpaper-category {
       font-size: 12px;
       color: #aaa;
     }
+
     .download-btn {
       display: inline-block;
       background: #4caf50;
@@ -107,6 +130,7 @@
       margin: 10px;
       cursor: pointer;
     }
+
     #preview-modal {
       display: none;
       position: fixed;
@@ -120,6 +144,7 @@
       justify-content: center;
       flex-direction: column;
     }
+
     #preview-img {
       max-width: 90%;
       max-height: 80vh;
@@ -128,12 +153,15 @@
       width: auto;
       height: auto;
     }
+
     #preview-img.phone {
       max-height: 90vh;
     }
+
     #preview-img.pc {
       max-width: 90vw;
     }
+
     #close-btn {
       margin-top: 15px;
       background: red;
@@ -143,18 +171,22 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
     @media screen and (max-width: 600px) {
       .search-bar {
         font-size: 14px;
       }
+
       .filter-btn,
       .download-btn {
         font-size: 12px;
         padding: 6px 10px;
       }
+
       .wallpaper-title {
         font-size: 13px;
       }
+
       .wallpaper-category {
         font-size: 11px;
       }
@@ -179,7 +211,7 @@
 
   <div id="preview-modal">
     <img id="preview-img" src="" alt="Preview" />
-    <a id="preview-download" class="download-btn">Download</a>
+    <a id="preview-download" class="download-btn" target="_blank">Download</a>
     <button id="close-btn" onclick="closePreview()">Close</button>
   </div>
 
@@ -197,10 +229,12 @@
         const card = document.createElement("div");
         card.className = "wallpaper-card";
         card.innerHTML = `
-          <img src="${wp.src}" alt="${wp.title}" loading="lazy" onclick="openPreview('${wp.src}', '${wp.title}', '${wp.type}')">
+          <img src="${wp.src}" alt="${wp.title}" loading="lazy" decoding="async"
+            onload="this.classList.add('loaded')"
+            onclick="openPreview('${wp.src}', '${wp.title}', '${wp.type}')">
           <div class="wallpaper-title">${wp.title}</div>
           <div class="wallpaper-category">Category: ${wp.category}</div>
-          <a href="#" onclick="downloadCompressed('${wp.src}', '${wp.title}')" class="download-btn">Download</a>
+          <a href="${wp.src}" download="${wp.title.replace(/\s+/g, '_')}.jpg" class="download-btn">Download</a>
         `;
         container.appendChild(card);
       });
@@ -229,47 +263,20 @@
     function openPreview(src, title, type) {
       const modal = document.getElementById("preview-modal");
       const img = document.getElementById("preview-img");
+      const downloadBtn = document.getElementById("preview-download");
+
       img.src = src;
       img.classList.remove("phone", "pc");
       img.classList.add(type === "phone" ? "phone" : "pc");
 
-      const downloadBtn = document.getElementById("preview-download");
-      downloadBtn.onclick = () => downloadCompressed(src, title);
+      downloadBtn.href = src;
+      downloadBtn.download = title.replace(/\s+/g, "_") + ".jpg";
 
       modal.style.display = "flex";
     }
 
     function closePreview() {
       document.getElementById("preview-modal").style.display = "none";
-    }
-
-    function downloadCompressed(src, title) {
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.onload = () => {
-        try {
-          const canvas = document.createElement("canvas");
-          canvas.width = img.naturalWidth;
-          canvas.height = img.naturalHeight;
-          const ctx = canvas.getContext("2d");
-          ctx.drawImage(img, 0, 0);
-
-          canvas.toBlob(blob => {
-            if (!blob) return alert("Compression failed!");
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `${title.replace(/\s+/g, "_")}_compressed.jpg`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(link.href);
-          }, "image/jpeg", 0.4);
-        } catch (err) {
-          alert("Error: " + err.message);
-        }
-      };
-      img.onerror = () => alert("Image load failed. Check path or enable CORS.");
-      img.src = src + "?v=" + Date.now();
     }
 
     document.getElementById("search-input").addEventListener("input", function () {
@@ -282,22 +289,23 @@
       displayWallpapers(filtered);
     });
 
+    // Disable inspect keys
     document.onkeydown = function (e) {
       if (
-        e.keyCode === 123 ||
-        (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) ||
-        (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83))
+        e.keyCode === 123 || // F12
+        (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || // Ctrl+Shift+I/J
+        (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83)) // Ctrl+U/S
       ) {
         return false;
       }
     };
 
+    // Disable drag on images
     document.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll("img").forEach(img => img.setAttribute("draggable", "false"));
+      displayCategoryFilters();
+      displayWallpapers();
     });
-
-    displayCategoryFilters();
-    displayWallpapers();
   </script>
 </body>
 </html>
