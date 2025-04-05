@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallpaper Showcase</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #111;
+      color: #fff;
+    }
+
+    header {
+      background: url('images/ani.gif') no-repeat center center/cover;
+      padding: 2em 1em;
+      text-align: center;
+      position: relative;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-direction: column;
+    }
+
+    .logo-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #fff;
+    }
+
+    .logo-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .logo-text {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 16px;
+      margin-top: 8px;
+    }
+
+    .search-bar-container {
+      text-align: center;
+      margin: 20px;
+    }
+
+    .search-bar {
+      padding: 10px;
+      width: 90%;
+      max-width: 400px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .wallpapers {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .wallpaper-card {
+      background: #1e1e1e;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.2s;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .wallpaper-card:hover {
+      transform: scale(1.03);
+    }
+
+    .wallpaper-card img {
+      width: 100%;
+      display: block;
+      cursor: pointer;
+      -webkit-user-drag: none;
+      user-drag: none;
+      -webkit-user-select: none;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .download-btn {
+      display: inline-block;
+      background: #4caf50;
+      color: white;
+      text-align: center;
+      padding: 8px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    .category-filters {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .filter-btn {
+      background: #333;
+      color: white;
+      border: none;
+      margin: 5px;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+
+    .filter-btn:hover {
+      background: #555;
+    }
+
+    .wallpaper-title {
+      text-align: center;
+      font-size: 14px;
+      padding: 8px 0;
+      background: #111;
+    }
+
+    .wallpaper-category {
+      text-align: center;
+      font-size: 12px;
+      color: #aaa;
+      padding-bottom: 10px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .search-bar {
+        width: 95%;
+        font-size: 14px;
+      }
+
+      .filter-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
+
+      .download-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
+
+      .wallpaper-title {
+        font-size: 13px;
+      }
+
+      .wallpaper-category {
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallpaper Showcase</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #111;
+      color: #fff;
+    }
+
+    header {
+      background: url('images/ani.gif') no-repeat center center/cover;
+      padding: 2em 1em;
+      text-align: center;
+      position: relative;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-direction: column;
+    }
+
+    .logo-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #fff;
+    }
+
+    .logo-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .logo-text {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 16px;
+      margin-top: 8px;
+    }
+
+    .search-bar-container {
+      text-align: center;
+      margin: 20px;
+    }
+
+    .search-bar {
+      padding: 10px;
+      width: 90%;
+      max-width: 400px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .wallpapers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .wallpaper-card {
+      background: #1e1e1e;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.2s;
+      width: 100%;
+    }
+
+    .wallpaper-card:hover {
+      transform: scale(1.03);
+    }
+
+    .wallpaper-card img {
+      width: 100%;
+      display: block;
+      aspect-ratio: 16/9;
+      -webkit-user-drag: none;
+      user-drag: none;
+      -webkit-user-select: none;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .download-btn {
+      display: inline-block;
+      background: #4caf50;
+      color: white;
+      text-align: center;
+      padding: 8px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    .category-filters {
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 0 10px;
+    }
+
+    .filter-btn {
+      background: #333;
+      color: white;
+      border: none;
+      margin: 5px;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+
+    .filter-btn:hover {
+      background: #555;
+    }
+
+    .wallpaper-title {
+      text-align: center;
+      font-size: 14px;
+      padding: 8px 0;
+      background: #111;
+    }
+
+    .wallpaper-category {
+      text-align: center;
+      font-size: 12px;
+      color: #aaa;
+      padding-bottom: 10px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .search-bar {
+        width: 95%;
+        font-size: 14px;
+      }
+
+      .filter-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
+
+      .download-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
+
+      .wallpaper-title {
+        font-size: 13px;
+      }
+
+      .wallpaper-category {
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <body>
+  <header>
+    <div class="logo-container">
+      <div class="logo-circle">
+        <img src="images/logo.png" alt="Logo">
+      </div>
+      <div class="logo-text">━━ ✦ ＮＥＢＵＬＡ ＥＬＩＸＩＲ ✦ ━━</div>
+    </div>
+  </header>
+
+  <div class="search-bar-container">
+    <input type="text" id="search-input" class="search-bar" placeholder="Search by image name or ...">
+  </div>
+
+  <div class="category-filters" id="category-filters"></div>
+
+  <div class="wallpapers" id="wallpaper-list"></div>
+
+  <div id="preview-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.9); z-index:999; align-items:center; justify-content:center; flex-direction:column;">
+    <img id="preview-img" src="" alt="Preview" style="max-width:90%; max-height:80vh; border-radius:10px;">
+    <a id="preview-download" class="download-btn" style="margin-top:20px;">Download</a>
+    <button onclick="closePreview()" style="margin-top:15px; background:red; color:white; border:none; padding:8px 16px; border-radius:5px; cursor:pointer;">Close</button>
+  </div>
+
+  <script>
+    const wallpapers = [
+      { id: 1, title: 'Dark Nebula Vibes', category: 'PC Wallpapers', src: 'images/1.png', resolution: '4K', tags: ['galaxy', 'universe'] },
+      { id: 2, title: 'Minimal Grid', category: 'Phone Wallpapers', src: 'images/2.png', resolution: '1080x1920', tags: ['grid', 'pattern'] },
+      { id: 3, title: 'Psychedelic Waves', category: 'Abstract', src: 'images/3.png', resolution: '4K', tags: ['trippy', 'colors'] },
+    ];
+
+    function displayWallpapers(filteredList = wallpapers) {
+      const container = document.getElementById('wallpaper-list');
+      container.innerHTML = '';
+      filteredList.forEach(wp => {
+        const card = document.createElement('div');
+        card.className = 'wallpaper-card';
+        card.innerHTML = `
+          <img src="${wp.src}" alt="${wp.title}" loading="lazy" onclick="openPreview('${wp.src}', '${wp.title}')">
+          <div class="wallpaper-title">${wp.title}</div>
+          <div class="wallpaper-category">Category: ${wp.category}</div>
+          <div style="position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.7); padding:2px 8px; border-radius:4px; font-size:12px;">
+            ${wp.resolution}
+          </div>
+          <a href="${wp.src}" download="${wp.title.replace(/\s+/g, '_')}.jpg" class="download-btn">Download</a>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function displayCategoryFilters() {
+      const categories = [...new Set(wallpapers.map(wp => wp.category))];
+      const container = document.getElementById('category-filters');
+      container.innerHTML = '';
+      const allBtn = document.createElement('button');
+      allBtn.className = 'filter-btn';
+      allBtn.textContent = 'All';
+      allBtn.onclick = () => displayWallpapers();
+      container.appendChild(allBtn);
+
+      categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn';
+        btn.textContent = cat;
+        btn.onclick = () => {
+          const filtered = wallpapers.filter(wp => wp.category === cat);
+          displayWallpapers(filtered);
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function openPreview(imgSrc, title) {
+      const modal = document.getElementById('preview-modal');
+      const previewImg = document.getElementById('preview-img');
+
+      previewImg.src = imgSrc;
+
+      const downloadBtn = document.getElementById('preview-download');
+      downloadBtn.onclick = () => {
+        const a = document.createElement('a');
+        a.href = imgSrc;
+        a.setAttribute('download', title.replace(/\s+/g, '_') + '.jpg');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      };
+
+      modal.style.display = 'flex';
+    }
+
+    function closePreview() {
+      document.getElementById('preview-modal').style.display = 'none';
+    }
+
+    document.getElementById('search-input').addEventListener('input', function () {
+      const query = this.value.toLowerCase();
+      const filtered = wallpapers.filter(wp =>
+        wp.title.toLowerCase().includes(query) ||
+        wp.category.toLowerCase().includes(query) ||
+        wp.tags.some(tag => tag.toLowerCase().includes(query))
+      );
+      displayWallpapers(filtered);
+    });
+
+    displayCategoryFilters();
+    displayWallpapers();
+
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.querySelectorAll('img').forEach(img => img.setAttribute('draggable', 'false'));
+
+    document.onkeydown = function (e) {
+      if (
+        e.keyCode === 123 ||
+        (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) ||
+        (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83))
+      ) {
+        return false;
+      }
+    };
+
+    (function () {
+      const threshold = 160;
+      setInterval(() => {
+        const widthGap = window.outerWidth - window.innerWidth;
+        const heightGap = window.outerHeight - window.innerHeight;
+        const devtoolsOpen = widthGap > threshold || heightGap > threshold;
+        if (devtoolsOpen) {
+          console.clear();
+          console.log = () => {};
+          console.warn = () => {};
+          console.error = () => {};
+          debugger;
+        }
+      }, 1000);
+    })();
+  </script>
+</body>
+
+</body>
+
+</html>
+
+</html>
