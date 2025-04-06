@@ -1,218 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wallpaper Showcase</title>
+  <meta charset="UTF-8">
+  <title>Wallpaper Website</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: #fff;
-    }
-
-    header {
-      background: url('ani.gif') no-repeat center center/cover;
-      padding: 2em 1em;
-      text-align: center;
-    }
-
-    .logo-circle {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 2px solid #fff;
-      margin: 0 auto;
-    }
-
-    .logo-circle img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .logo-text {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 16px;
-      margin-top: 10px;
-    }
-
-    .search-bar-container {
-      text-align: center;
-      margin: 20px;
-    }
-
-    .search-bar {
-      padding: 10px;
-      width: 90%;
-      max-width: 400px;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-
-    .category-filters {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .filter-btn {
-      background: #333;
-      color: #fff;
-      border: none;
-      margin: 5px;
-      padding: 8px 16px;
-      cursor: pointer;
-      border-radius: 4px;
-      font-size: 14px;
-    }
-
-    .wallpapers {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 15px;
+      font-family: sans-serif;
+      background: #f0f0f0;
       padding: 20px;
     }
-
-    .wallpaper-card {
-      background: #1e1e1e;
-      border-radius: 8px;
-      overflow: hidden;
-      position: relative;
-      transition: transform 0.2s;
-      width: 100%;
-    }
-
-    .wallpaper-card:hover {
-      transform: scale(1.03);
-    }
-
-    .wallpaper-card img {
-      width: 100%;
-      display: block;
-      -webkit-user-drag: none;
-      user-select: none;
-      pointer-events: none;
-      filter: blur(2px);
-      transform: scale(1.02);
-      transition: filter 0.3s ease, transform 0.3s ease;
-    }
-
-    .wallpaper-card img.loaded {
-      filter: none;
-      transform: none;
-    }
-
-    .wallpaper-title,
-    .wallpaper-category {
-      text-align: center;
-      font-size: 14px;
-      padding: 8px 0;
-    }
-
-    .wallpaper-category {
-      font-size: 12px;
-      color: #aaa;
-    }
-
-    .download-btn {
+    .wallpaper {
       display: inline-block;
-      background: #4caf50;
-      color: white;
-      text-align: center;
-      padding: 8px 12px;
-      border-radius: 4px;
-      text-decoration: none;
-      font-size: 14px;
       margin: 10px;
-      cursor: pointer;
-    }
-
-    #preview-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.95);
-      z-index: 999;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-    }
-
-    #preview-img {
-      max-width: 90%;
-      max-height: 80vh;
+      background: white;
+      border: 1px solid #ccc;
       border-radius: 10px;
-      object-fit: contain;
-      width: auto;
-      height: auto;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-
-    #preview-img.phone {
-      max-height: 90vh;
+    .wallpaper img {
+      width: 300px;
+      height: 170px;
+      display: block;
     }
-
-    #preview-img.pc {
-      max-width: 90vw;
-    }
-
-    #close-btn {
-      margin-top: 15px;
-      background: red;
+    .wallpaper button {
+      width: 100%;
+      padding: 10px;
+      background: #007bff;
       color: white;
       border: none;
-      padding: 8px 16px;
-      border-radius: 5px;
       cursor: pointer;
+      font-weight: bold;
     }
-
-    @media screen and (max-width: 600px) {
-      .search-bar {
-        font-size: 14px;
-      }
-
-      .filter-btn,
-      .download-btn {
-        font-size: 12px;
-        padding: 6px 10px;
-      }
-
-      .wallpaper-title {
-        font-size: 13px;
-      }
-
-      .wallpaper-category {
-        font-size: 11px;
-      }
+    .wallpaper button:hover {
+      background: #0056b3;
     }
   </style>
 </head>
-<body oncontextmenu="return false">
-  <header>
-    <div class="logo-circle">
-      <img src="logo.png" alt="Logo" />
-    </div>
-    <div class="logo-text">━━ ✦ＮＥＢＵＬＡ ＥＬＩＸＩＲ✦ ━━</div>
-  </header>
+<body>
 
-  <div class="search-bar-container">
-    <input type="text" id="search-input" class="search-bar" placeholder="Search wallpapers..." />
+  <!-- 📌 Example image cards -->
+  <div class="wallpaper">
+    <img src="low1.png" alt="Wallpaper 1">
+    <button onclick="downloadImage(1)">Download</button>
   </div>
 
-  <div class="category-filters" id="category-filters"></div>
+  <div class="wallpaper">
+    <img src="low2.png" alt="Wallpaper 2">
+    <button onclick="downloadImage(2)">Download</button>
+  </div>
 
-  <div class="wallpapers" id="wallpaper-list"></div>
-
-  <div id="preview-modal">
-    <img id="preview-img" src="" alt="Preview" />
-    <a id="preview-download" class="download-btn" target="_blank">Download</a>
-    <button id="close-btn" onclick="closePreview()">Close</button>
+  <div class="wallpaper">
+    <img src="low3.png" alt="Wallpaper 3">
+    <button onclick="downloadImage(3)">Download</button>
   </div>
 
   <script>
@@ -283,89 +123,15 @@
   { id: 64, title: "Wallpaper 64", category: "Design", src: "64.png", lowsrc: "low64.png", resolution: "1K", tags: ["Design"], type: "Design" },
 ];
 
-
-    function displayWallpapers(list = wallpapers) {
-      const container = document.getElementById("wallpaper-list");
-      container.innerHTML = "";
-      list.forEach(wp => {
-        const card = document.createElement("div");
-        card.className = "wallpaper-card";
-        card.innerHTML = `
-          <img src="${wp.src}" alt="${wp.title}" loading="lazy" decoding="async"
-            onload="this.classList.add('loaded')"
-            onclick="openPreview('${wp.src}', '${wp.title}', '${wp.type}')">
-          <div class="wallpaper-title">${wp.title}</div>
-          <div class="wallpaper-category">Category: ${wp.category}</div>
-          <a href="${wp.src}" download="${wp.title.replace(/\s+/g, '_')}.jpg" class="download-btn">Download</a>
-        `;
-        container.appendChild(card);
-      });
+    function downloadImage(id) {
+      const link = document.createElement('a');
+      link.href = id + '.png'; // high quality image like 1.png, 2.png...
+      link.download = 'wallpaper' + id + '.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
-
-    function displayCategoryFilters() {
-      const container = document.getElementById("category-filters");
-      container.innerHTML = "";
-      const categories = [...new Set(wallpapers.map(wp => wp.category))];
-
-      const allBtn = document.createElement("button");
-      allBtn.className = "filter-btn";
-      allBtn.textContent = "All";
-      allBtn.onclick = () => displayWallpapers();
-      container.appendChild(allBtn);
-
-      categories.forEach(cat => {
-        const btn = document.createElement("button");
-        btn.className = "filter-btn";
-        btn.textContent = cat;
-        btn.onclick = () => displayWallpapers(wallpapers.filter(wp => wp.category === cat));
-        container.appendChild(btn);
-      });
-    }
-
-    function openPreview(src, title, type) {
-      const modal = document.getElementById("preview-modal");
-      const img = document.getElementById("preview-img");
-      const downloadBtn = document.getElementById("preview-download");
-
-      img.src = src;
-      img.classList.remove("phone", "pc");
-      img.classList.add(type === "phone" ? "phone" : "pc");
-
-      downloadBtn.href = src;
-      downloadBtn.download = title.replace(/\s+/g, "_") + ".jpg";
-
-      modal.style.display = "flex";
-    }
-
-    function closePreview() {
-      document.getElementById("preview-modal").style.display = "none";
-    }
-
-    document.getElementById("search-input").addEventListener("input", function () {
-      const query = this.value.toLowerCase();
-      const filtered = wallpapers.filter(wp =>
-        wp.title.toLowerCase().includes(query) ||
-        wp.category.toLowerCase().includes(query) ||
-        wp.tags.some(tag => tag.toLowerCase().includes(query))
-      );
-      displayWallpapers(filtered);
-    });
-
-    document.onkeydown = function (e) {
-      if (
-        e.keyCode === 123 ||
-        (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) ||
-        (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83))
-      ) {
-        return false;
-      }
-    };
-
-    document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll("img").forEach(img => img.setAttribute("draggable", "false"));
-      displayCategoryFilters();
-      displayWallpapers();
-    });
   </script>
+
 </body>
 </html>
