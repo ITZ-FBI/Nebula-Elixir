@@ -14,7 +14,7 @@
     }
 
     header {
-      background: #333;
+      background: url('ani.gif') no-repeat center center/cover;
       padding: 2em 1em;
       text-align: center;
     }
@@ -26,7 +26,12 @@
       overflow: hidden;
       border: 2px solid #fff;
       margin: 0 auto;
-      background: #444;
+    }
+
+    .logo-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .logo-text {
@@ -87,26 +92,18 @@
 
     .wallpaper-card img {
       width: 100%;
-      height: 300px;
       display: block;
       -webkit-user-drag: none;
       user-select: none;
       pointer-events: none;
-      object-fit: cover;
-      background: #1e1e1e;
-      transition: filter 0.5s ease, transform 0.5s ease;
+      filter: blur(2px);
+      transform: scale(1.02);
+      transition: filter 0.3s ease, transform 0.3s ease;
     }
 
-    @keyframes shimmer {
-      0% { background-position: -1000px 0; }
-      100% { background-position: 1000px 0; }
-    }
-
-    .wallpaper-card img.lazy-load {
-      filter: blur(10px);
-      background: linear-gradient(90deg, #1e1e1e 25%, #2a2a2a 50%, #1e1e1e 75%);
-      background-size: 200% 100%;
-      animation: shimmer 2s infinite linear;
+    .wallpaper-card img.loaded {
+      filter: none;
+      transform: none;
     }
 
     .wallpaper-title,
@@ -157,6 +154,14 @@
       height: auto;
     }
 
+    #preview-img.phone {
+      max-height: 90vh;
+    }
+
+    #preview-img.pc {
+      max-width: 90vw;
+    }
+
     #close-btn {
       margin-top: 15px;
       background: red;
@@ -190,7 +195,9 @@
 </head>
 <body oncontextmenu="return false">
   <header>
-    <div class="logo-circle"></div>
+    <div class="logo-circle">
+      <img src="logo.png" alt="Logo" />
+    </div>
     <div class="logo-text">━━ ✦ＮＥＢＵＬＡ ＥＬＩＸＩＲ✦ ━━</div>
   </header>
 
@@ -210,7 +217,8 @@
 
   <script>
     const wallpapers = [
-      { id: 1, title: "Library", category: "Design", src: "1.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      
+  { id: 1, title: "Library", category: "Design", src: "1.png", resolution: "1K", tags: ["Design"], type: "Design" },
 { id: 2, title: "Flying pot", category: "Design", src: "2.png", resolution: "1K", tags: ["Design"], type: "Design" },
 { id: 3, title: "Library 2", category: "Design", src: "3.png", resolution: "1K", tags: ["Design"], type: "Design" },
 { id: 4, title: "Shope keeper with customer", category: "Anime", src: "4.png", resolution: "1k", tags: ["Anime"]},
@@ -278,72 +286,20 @@
   
 ];
 
-    // Optimized image loader
-    class ImageLoader {
-      constructor() {
-        this.observer = new IntersectionObserver(this.handleIntersect.bind(this), {
-          rootMargin: '200px',
-          threshold: 0.01
-        });
-        this.imageCache = new Set();
-      }
-
-      handleIntersect(entries) {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const img = entry.target;
-            this.loadFullImage(img);
-            this.observer.unobserve(img);
-          }
-        });
-      }
-
-      loadFullImage(img) {
-        if (this.imageCache.has(img.dataset.src)) {
-          img.src = img.dataset.src;
-          img.classList.remove('lazy-load');
-          return;
-        }
-
-        const tempImg = new Image();
-        tempImg.src = img.dataset.src;
-        tempImg.onload = () => {
-          img.src = img.dataset.src;
-          img.classList.remove('lazy-load');
-          this.imageCache.add(img.dataset.src);
-        };
-      }
-
-      observe(img) {
-        this.observer.observe(img);
-      }
-    }
-
-    const imageLoader = new ImageLoader();
-
     function displayWallpapers(list = wallpapers) {
       const container = document.getElementById("wallpaper-list");
       container.innerHTML = "";
-      
       list.forEach(wp => {
         const card = document.createElement("div");
         card.className = "wallpaper-card";
         card.innerHTML = `
-          <img 
-            class="lazy-load"
-            data-src="${wp.src}"
-            alt="${wp.title}"
-            loading="lazy"
-            decoding="async"
-            fetchpriority="low"
+          <img src="${wp.src}" alt="${wp.title}" loading="lazy" decoding="async"
+            onload="this.classList.add('loaded')"
             onclick="openPreview('${wp.src}', '${wp.title}', '${wp.type}')">
           <div class="wallpaper-title">${wp.title}</div>
           <div class="wallpaper-category">Category: ${wp.category}</div>
           <a href="${wp.src}" download="${wp.title.replace(/\s+/g, '_')}.jpg" class="download-btn">Download</a>
         `;
-
-        const img = card.querySelector('img');
-        imageLoader.observe(img);
         container.appendChild(card);
       });
     }
@@ -373,36 +329,39 @@
       const img = document.getElementById("preview-img");
       const downloadBtn = document.getElementById("preview-download");
 
-      // Show loading state
-      img.src = '';
-      img.className = 'lazy-load';
-      modal.style.display = "flex";
-
-      // Load full image
-      const fullImg = new Image();
-      fullImg.src = src;
-      fullImg.onload = () => {
-        img.src = src;
-        img.className = '';
-      };
+      img.src = src;
+      img.classList.remove("phone", "pc");
+      img.classList.add(type === "phone" ? "phone" : "pc");
 
       downloadBtn.href = src;
       downloadBtn.download = title.replace(/\s+/g, "_") + ".jpg";
+
+      modal.style.display = "flex";
     }
 
     function closePreview() {
       document.getElementById("preview-modal").style.display = "none";
     }
 
-    document.getElementById("search-input").addEventListener("input", function() {
+    document.getElementById("search-input").addEventListener("input", function () {
       const query = this.value.toLowerCase();
       const filtered = wallpapers.filter(wp =>
         wp.title.toLowerCase().includes(query) ||
         wp.category.toLowerCase().includes(query) ||
-        (wp.tags && wp.tags.some(tag => tag.toLowerCase().includes(query)))
+        wp.tags.some(tag => tag.toLowerCase().includes(query))
       );
       displayWallpapers(filtered);
     });
+
+    document.onkeydown = function (e) {
+      if (
+        e.keyCode === 123 ||
+        (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) ||
+        (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83))
+      ) {
+        return false;
+      }
+    };
 
     document.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll("img").forEach(img => img.setAttribute("draggable", "false"));
