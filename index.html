@@ -1,137 +1,374 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Wallpaper Website</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wallpaper Showcase</title>
   <style>
     body {
-      font-family: sans-serif;
-      background: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+    }
+
+    header {
+      background: url('ani.gif') no-repeat center center/cover;
+      padding: 2em 1em;
+      text-align: center;
+    }
+
+    .logo-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #fff;
+      margin: 0 auto;
+    }
+
+    .logo-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .logo-text {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .search-bar-container {
+      text-align: center;
+      margin: 20px;
+    }
+
+    .search-bar {
+      padding: 10px;
+      width: 90%;
+      max-width: 400px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .category-filters {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .filter-btn {
+      background: #333;
+      color: #fff;
+      border: none;
+      margin: 5px;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .wallpapers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
       padding: 20px;
     }
-    .wallpaper {
-      display: inline-block;
-      margin: 10px;
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 10px;
+
+    .wallpaper-card {
+      background: #1e1e1e;
+      border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .wallpaper img {
-      width: 300px;
-      height: 170px;
-      display: block;
-    }
-    .wallpaper button {
+      position: relative;
+      transition: transform 0.2s;
       width: 100%;
-      padding: 10px;
-      background: #007bff;
+    }
+
+    .wallpaper-card:hover {
+      transform: scale(1.03);
+    }
+
+    .wallpaper-card img {
+      width: 100%;
+      display: block;
+      -webkit-user-drag: none;
+      user-select: none;
+      pointer-events: none;
+      filter: blur(2px);
+      transform: scale(1.02);
+      transition: filter 0.3s ease, transform 0.3s ease;
+    }
+
+    .wallpaper-card img.loaded {
+      filter: none;
+      transform: none;
+    }
+
+    .wallpaper-title,
+    .wallpaper-category {
+      text-align: center;
+      font-size: 14px;
+      padding: 8px 0;
+    }
+
+    .wallpaper-category {
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    .download-btn {
+      display: inline-block;
+      background: #4caf50;
+      color: white;
+      text-align: center;
+      padding: 8px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    #preview-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    #preview-img {
+      max-width: 90%;
+      max-height: 80vh;
+      border-radius: 10px;
+      object-fit: contain;
+      width: auto;
+      height: auto;
+    }
+
+    #preview-img.phone {
+      max-height: 90vh;
+    }
+
+    #preview-img.pc {
+      max-width: 90vw;
+    }
+
+    #close-btn {
+      margin-top: 15px;
+      background: red;
       color: white;
       border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
       cursor: pointer;
-      font-weight: bold;
     }
-    .wallpaper button:hover {
-      background: #0056b3;
+
+    @media screen and (max-width: 600px) {
+      .search-bar {
+        font-size: 14px;
+      }
+
+      .filter-btn,
+      .download-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
+
+      .wallpaper-title {
+        font-size: 13px;
+      }
+
+      .wallpaper-category {
+        font-size: 11px;
+      }
     }
   </style>
 </head>
-<body>
+<body oncontextmenu="return false">
+  <header>
+    <div class="logo-circle">
+      <img src="logo.png" alt="Logo" />
+    </div>
+    <div class="logo-text">━━ ✦ＮＥＢＵＬＡ ＥＬＩＸＩＲ✦ ━━</div>
+  </header>
 
-  <!-- 📌 Example image cards -->
-  <div class="wallpaper">
-    <img src="low1.png" alt="Wallpaper 1">
-    <button onclick="downloadImage(1)">Download</button>
+  <div class="search-bar-container">
+    <input type="text" id="search-input" class="search-bar" placeholder="Search wallpapers..." />
   </div>
 
-  <div class="wallpaper">
-    <img src="low2.png" alt="Wallpaper 2">
-    <button onclick="downloadImage(2)">Download</button>
-  </div>
+  <div class="category-filters" id="category-filters"></div>
 
-  <div class="wallpaper">
-    <img src="low3.png" alt="Wallpaper 3">
-    <button onclick="downloadImage(3)">Download</button>
+  <div class="wallpapers" id="wallpaper-list"></div>
+
+  <div id="preview-modal">
+    <img id="preview-img" src="" alt="Preview" />
+    <a id="preview-download" class="download-btn" target="_blank">Download</a>
+    <button id="close-btn" onclick="closePreview()">Close</button>
   </div>
 
   <script>
     const wallpapers = [
-  { id: 1, title: "Wallpaper 1", category: "Design", src: "1.png", lowsrc: "low1.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 2, title: "Wallpaper 2", category: "Design", src: "2.png", lowsrc: "low2.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 3, title: "Wallpaper 3", category: "Design", src: "3.png", lowsrc: "low3.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 4, title: "Wallpaper 4", category: "Design", src: "4.png", lowsrc: "low4.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 5, title: "Wallpaper 5", category: "Design", src: "5.png", lowsrc: "low5.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 6, title: "Wallpaper 6", category: "Design", src: "6.png", lowsrc: "low6.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 7, title: "Wallpaper 7", category: "Design", src: "7.png", lowsrc: "low7.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 8, title: "Wallpaper 8", category: "Design", src: "8.png", lowsrc: "low8.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 9, title: "Wallpaper 9", category: "Design", src: "9.png", lowsrc: "low9.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 10, title: "Wallpaper 10", category: "Design", src: "10.png", lowsrc: "low10.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 11, title: "Wallpaper 11", category: "Design", src: "11.png", lowsrc: "low11.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 12, title: "Wallpaper 12", category: "Design", src: "12.png", lowsrc: "low12.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 13, title: "Wallpaper 13", category: "Design", src: "13.png", lowsrc: "low13.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 14, title: "Wallpaper 14", category: "Design", src: "14.png", lowsrc: "low14.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 15, title: "Wallpaper 15", category: "Design", src: "15.png", lowsrc: "low15.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 16, title: "Wallpaper 16", category: "Design", src: "16.png", lowsrc: "low16.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 17, title: "Wallpaper 17", category: "Design", src: "17.png", lowsrc: "low17.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 18, title: "Wallpaper 18", category: "Design", src: "18.png", lowsrc: "low18.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 19, title: "Wallpaper 19", category: "Design", src: "19.png", lowsrc: "low19.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 20, title: "Wallpaper 20", category: "Design", src: "20.png", lowsrc: "low20.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 21, title: "Wallpaper 21", category: "Design", src: "21.png", lowsrc: "low21.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 22, title: "Wallpaper 22", category: "Design", src: "22.png", lowsrc: "low22.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 23, title: "Wallpaper 23", category: "Design", src: "23.png", lowsrc: "low23.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 24, title: "Wallpaper 24", category: "Design", src: "24.png", lowsrc: "low24.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 25, title: "Wallpaper 25", category: "Design", src: "25.png", lowsrc: "low25.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 26, title: "Wallpaper 26", category: "Design", src: "26.png", lowsrc: "low26.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 27, title: "Wallpaper 27", category: "Design", src: "27.png", lowsrc: "low27.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 28, title: "Wallpaper 28", category: "Design", src: "28.png", lowsrc: "low28.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 29, title: "Wallpaper 29", category: "Design", src: "29.png", lowsrc: "low29.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 30, title: "Wallpaper 30", category: "Design", src: "30.png", lowsrc: "low30.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 31, title: "Wallpaper 31", category: "Design", src: "31.png", lowsrc: "low31.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 32, title: "Wallpaper 32", category: "Design", src: "32.png", lowsrc: "low32.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 33, title: "Wallpaper 33", category: "Design", src: "33.png", lowsrc: "low33.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 34, title: "Wallpaper 34", category: "Design", src: "34.png", lowsrc: "low34.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 35, title: "Wallpaper 35", category: "Design", src: "35.png", lowsrc: "low35.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 36, title: "Wallpaper 36", category: "Design", src: "36.png", lowsrc: "low36.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 37, title: "Wallpaper 37", category: "Design", src: "37.png", lowsrc: "low37.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 38, title: "Wallpaper 38", category: "Design", src: "38.png", lowsrc: "low38.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 39, title: "Wallpaper 39", category: "Design", src: "39.png", lowsrc: "low39.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 40, title: "Wallpaper 40", category: "Design", src: "40.png", lowsrc: "low40.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 41, title: "Wallpaper 41", category: "Design", src: "41.png", lowsrc: "low41.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 42, title: "Wallpaper 42", category: "Design", src: "42.png", lowsrc: "low42.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 43, title: "Wallpaper 43", category: "Design", src: "43.png", lowsrc: "low43.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 44, title: "Wallpaper 44", category: "Design", src: "44.png", lowsrc: "low44.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 45, title: "Wallpaper 45", category: "Design", src: "45.png", lowsrc: "low45.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 46, title: "Wallpaper 46", category: "Design", src: "46.png", lowsrc: "low46.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 47, title: "Wallpaper 47", category: "Design", src: "47.png", lowsrc: "low47.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 48, title: "Wallpaper 48", category: "Design", src: "48.png", lowsrc: "low48.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 49, title: "Wallpaper 49", category: "Design", src: "49.png", lowsrc: "low49.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 50, title: "Wallpaper 50", category: "Design", src: "50.png", lowsrc: "low50.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 51, title: "Wallpaper 51", category: "Design", src: "51.png", lowsrc: "low51.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 52, title: "Wallpaper 52", category: "Design", src: "52.png", lowsrc: "low52.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 53, title: "Wallpaper 53", category: "Design", src: "53.png", lowsrc: "low53.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 54, title: "Wallpaper 54", category: "Design", src: "54.png", lowsrc: "low54.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 55, title: "Wallpaper 55", category: "Design", src: "55.png", lowsrc: "low55.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 56, title: "Wallpaper 56", category: "Design", src: "56.png", lowsrc: "low56.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 57, title: "Wallpaper 57", category: "Design", src: "57.png", lowsrc: "low57.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 58, title: "Wallpaper 58", category: "Design", src: "58.png", lowsrc: "low58.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 59, title: "Wallpaper 59", category: "Design", src: "59.png", lowsrc: "low59.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 60, title: "Wallpaper 60", category: "Design", src: "60.png", lowsrc: "low60.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 61, title: "Wallpaper 61", category: "Design", src: "61.png", lowsrc: "low61.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 62, title: "Wallpaper 62", category: "Design", src: "62.png", lowsrc: "low62.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 63, title: "Wallpaper 63", category: "Design", src: "63.png", lowsrc: "low63.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 64, title: "Wallpaper 64", category: "Design", src: "64.png", lowsrc: "low64.png", resolution: "1K", tags: ["Design"], type: "Design" },
-];
+      { id: 1, title: "Wallpaper 1", category: "Design", src: "1.png", lowsrc: "low1.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 2, title: "Wallpaper 2", category: "Design", src: "2.png", lowsrc: "low2.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 3, title: "Wallpaper 3", category: "Design", src: "3.png", lowsrc: "low3.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 4, title: "Wallpaper 4", category: "Design", src: "4.png", lowsrc: "low4.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 5, title: "Wallpaper 5", category: "Design", src: "5.png", lowsrc: "low5.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 6, title: "Wallpaper 6", category: "Design", src: "6.png", lowsrc: "low6.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 7, title: "Wallpaper 7", category: "Design", src: "7.png", lowsrc: "low7.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 8, title: "Wallpaper 8", category: "Design", src: "8.png", lowsrc: "low8.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 9, title: "Wallpaper 9", category: "Design", src: "9.png", lowsrc: "low9.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 10, title: "Wallpaper 10", category: "Design", src: "10.png", lowsrc: "low10.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 11, title: "Wallpaper 11", category: "Design", src: "11.png", lowsrc: "low11.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 12, title: "Wallpaper 12", category: "Design", src: "12.png", lowsrc: "low12.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 13, title: "Wallpaper 13", category: "Design", src: "13.png", lowsrc: "low13.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 14, title: "Wallpaper 14", category: "Design", src: "14.png", lowsrc: "low14.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 15, title: "Wallpaper 15", category: "Design", src: "15.png", lowsrc: "low15.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 16, title: "Wallpaper 16", category: "Design", src: "16.png", lowsrc: "low16.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 17, title: "Wallpaper 17", category: "Design", src: "17.png", lowsrc: "low17.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 18, title: "Wallpaper 18", category: "Design", src: "18.png", lowsrc: "low18.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 19, title: "Wallpaper 19", category: "Design", src: "19.png", lowsrc: "low19.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 20, title: "Wallpaper 20", category: "Design", src: "20.png", lowsrc: "low20.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 21, title: "Wallpaper 21", category: "Design", src: "21.png", lowsrc: "low21.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 22, title: "Wallpaper 22", category: "Design", src: "22.png", lowsrc: "low22.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 23, title: "Wallpaper 23", category: "Design", src: "23.png", lowsrc: "low23.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 24, title: "Wallpaper 24", category: "Design", src: "24.png", lowsrc: "low24.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 25, title: "Wallpaper 25", category: "Design", src: "25.png", lowsrc: "low25.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 26, title: "Wallpaper 26", category: "Design", src: "26.png", lowsrc: "low26.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 27, title: "Wallpaper 27", category: "Design", src: "27.png", lowsrc: "low27.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 28, title: "Wallpaper 28", category: "Design", src: "28.png", lowsrc: "low28.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 29, title: "Wallpaper 29", category: "Design", src: "29.png", lowsrc: "low29.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 30, title: "Wallpaper 30", category: "Design", src: "30.png", lowsrc: "low30.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 31, title: "Wallpaper 31", category: "Design", src: "31.png", lowsrc: "low31.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 32, title: "Wallpaper 32", category: "Design", src: "32.png", lowsrc: "low32.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 33, title: "Wallpaper 33", category: "Design", src: "33.png", lowsrc: "low33.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 34, title: "Wallpaper 34", category: "Design", src: "34.png", lowsrc: "low34.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 35, title: "Wallpaper 35", category: "Design", src: "35.png", lowsrc: "low35.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 36, title: "Wallpaper 36", category: "Design", src: "36.png", lowsrc: "low36.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 37, title: "Wallpaper 37", category: "Design", src: "37.png", lowsrc: "low37.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 38, title: "Wallpaper 38", category: "Design", src: "38.png", lowsrc: "low38.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 39, title: "Wallpaper 39", category: "Design", src: "39.png", lowsrc: "low39.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 40, title: "Wallpaper 40", category: "Design", src: "40.png", lowsrc: "low40.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 41, title: "Wallpaper 41", category: "Design", src: "41.png", lowsrc: "low41.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 42, title: "Wallpaper 42", category: "Design", src: "42.png", lowsrc: "low42.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 43, title: "Wallpaper 43", category: "Design", src: "43.png", lowsrc: "low43.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 44, title: "Wallpaper 44", category: "Design", src: "44.png", lowsrc: "low44.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 45, title: "Wallpaper 45", category: "Design", src: "45.png", lowsrc: "low45.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 46, title: "Wallpaper 46", category: "Design", src: "46.png", lowsrc: "low46.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 47, title: "Wallpaper 47", category: "Design", src: "47.png", lowsrc: "low47.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 48, title: "Wallpaper 48", category: "Design", src: "48.png", lowsrc: "low48.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 49, title: "Wallpaper 49", category: "Design", src: "49.png", lowsrc: "low49.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 50, title: "Wallpaper 50", category: "Design", src: "50.png", lowsrc: "low50.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 51, title: "Wallpaper 51", category: "Design", src: "51.png", lowsrc: "low51.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 52, title: "Wallpaper 52", category: "Design", src: "52.png", lowsrc: "low52.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 53, title: "Wallpaper 53", category: "Design", src: "53.png", lowsrc: "low53.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 54, title: "Wallpaper 54", category: "Design", src: "54.png", lowsrc: "low54.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 55, title: "Wallpaper 55", category: "Design", src: "55.png", lowsrc: "low55.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 56, title: "Wallpaper 56", category: "Design", src: "56.png", lowsrc: "low56.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 57, title: "Wallpaper 57", category: "Design", src: "57.png", lowsrc: "low57.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 58, title: "Wallpaper 58", category: "Design", src: "58.png", lowsrc: "low58.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 59, title: "Wallpaper 59", category: "Design", src: "59.png", lowsrc: "low59.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 60, title: "Wallpaper 60", category: "Design", src: "60.png", lowsrc: "low60.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 61, title: "Wallpaper 61", category: "Design", src: "61.png", lowsrc: "low61.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 62, title: "Wallpaper 62", category: "Design", src: "62.png", lowsrc: "low62.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 63, title: "Wallpaper 63", category: "Design", src: "63.png", lowsrc: "low63.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 64, title: "Wallpaper 64", category: "Design", src: "64.png", lowsrc: "low64.png", resolution: "1K", tags: ["Design"], type: "Design" },
+    ];
 
-    function downloadImage(id) {
-      const link = document.createElement('a');
-      link.href = id + '.png'; // high quality image like 1.png, 2.png...
-      link.download = 'wallpaper' + id + '.png';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+
+    function displayWallpapers(list = wallpapers) {
+      const container = document.getElementById("wallpaper-list");
+      container.innerHTML = "";
+      list.forEach(wp => {
+        const card = document.createElement("div");
+        card.className = "wallpaper-card";
+        card.innerHTML = `
+          <img src="${wp.lowsrc}" alt="${wp.title}" loading="lazy" decoding="async"
+            onload="this.classList.add('loaded')"
+            onclick="openPreview('${wp.lowsrc}', '${wp.title}', '${wp.type}')">
+          <div class="wallpaper-title">${wp.title}</div>
+          <div class="wallpaper-category">Category: ${wp.category}</div>
+          <a href="${wp.src}" download="${wp.title.replace(/\s+/g, '_')}.jpg" class="download-btn">Download</a>
+        `;
+        container.appendChild(card);
+      });
     }
-  </script>
 
+    function displayCategoryFilters() {
+      const container = document.getElementById("category-filters");
+      container.innerHTML = "";
+      const categories = [...new Set(wallpapers.map(wp => wp.category))];
+
+      const allBtn = document.createElement("button");
+      allBtn.className = "filter-btn";
+      allBtn.textContent = "All";
+      allBtn.onclick = () => displayWallpapers();
+      container.appendChild(allBtn);
+
+      categories.forEach(cat => {
+        const btn = document.createElement("button");
+        btn.className = "filter-btn";
+        btn.textContent = cat;
+        btn.onclick = () => displayWallpapers(wallpapers.filter(wp => wp.category === cat));
+        container.appendChild(btn);
+      });
+    }
+
+    function openPreview(src, title, type) {
+      const modal = document.getElementById("preview-modal");
+      const img = document.getElementById("preview-img");
+      const downloadBtn = document.getElementById("preview-download");
+
+      // Set preview image to low quality image (src passed is low image)
+      img.src = src;
+      img.classList.remove("phone", "pc");
+      img.classList.add(type === "phone" ? "phone" : "pc");
+
+      // Compute high quality image by removing the "low" prefix from the filename
+      const highSrc = src.replace(/^low/, '');
+      downloadBtn.href = highSrc;
+      downloadBtn.download = title.replace(/\s+/g, "_") + ".jpg";
+
+      modal.style.display = "flex";
+    }
+
+    function closePreview() {
+      document.getElementById("preview-modal").style.display = "none";
+    }
+
+    document.getElementById("search-input").addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      const filtered = wallpapers.filter(wp =>
+        wp.title.toLowerCase().includes(query) ||
+        wp.category.toLowerCase().includes(query) ||
+        wp.tags.some(tag => tag.toLowerCase().includes(query))
+      );
+      displayWallpapers(filtered);
+    });
+
+    document.onkeydown = function (e) {
+      if (
+        e.keyCode === 123 ||
+        (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) ||
+        (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83))
+      ) {
+        return false;
+      }
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll("img").forEach(img => img.setAttribute("draggable", "false"));
+      displayCategoryFilters();
+      displayWallpapers();
+    });
+  </script>
 </body>
 </html>
