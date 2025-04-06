@@ -217,71 +217,72 @@
 
   <script>
     const wallpapers = [
-      { id: 1, title: "Library", category: "Design", src: "1.png", lowsrc: "low1.png", resolution: "1K", tags: ["Design"], type: "Design" },
-      { id: 2, title: "Flying pot", category: "Design", src: "2.png", lowsrc: "low2.png", resolution: "1K", tags: ["Design"], type: "Design" },
-      { id: 3, title: "Library 2", category: "Design", src: "3.png", lowsrc: "low3.png", resolution: "1K", tags: ["Design"], type: "Design" },
-      { id: 4, title: "Shope keeper with customer", category: "Anime", src: "4.png", lowsrc: "low4.png", resolution: "1k", tags: ["Anime"]},
-      { id: 5, title: "Forest with stairs", category: "Nature", src: "5.png", lowsrc: "low5.png", resolution: "1K", tags: ["Nature"], type: "" },
-      { id: 6, title: "Forest with stairs 2", category: "Nature", src: "6.png", lowsrc: "low6.png", resolution: "1K", tags: ["Nature"], type: "" },
-      { id: 7, title: "Forest with stairs 3", category: "Nature", src: "7.png", lowsrc: "low7.png", resolution: "1K", tags: ["Nature"], type: "" },
-      { id: 8, title: "Night Sky", category: "Nature", src: "8.png", lowsrc: "low8.png", resolution: "1K", tags: ["Nature"], type: "" },
-      { id: 9, title: "Lucky Day", category: "Anime", src: "9.png", lowsrc: "low9.png", resolution: "1K", tags: ["Anime"], type: "" },
-      { id: 10, title: "Lucky Day 2", category: "Anime", src: "10.png", lowsrc: "low10.png", resolution: "1K", tags: ["Anime"], type: "" },
-      { id: 11, title: "Flying Tea Pot", category: "Design", src: "11.png", lowsrc: "low11.png", resolution: "1K", tags: ["Design"], type: "" },
-      { id: 12, title: "Flying Tea Pot 2", category: "Design", src: "12.png", lowsrc: "low12.png", resolution: "1K", tags: ["Design"], type: "" },
-      { id: 13, title: "Shope keeper with customer 2", category: "Anime", src: "13.png", lowsrc: "low13.png", resolution: "1k", tags: ["Anime"]},
-      { id: 14, title: "Shope keeper with customer 3", category: "Anime", src: "14.png", lowsrc: "low14.png", resolution: "1k", tags: ["Anime"]},
-      { id: 15, title: "Cherry Blossom Pond", category: "Nature", src: "15.png", lowsrc: "low15.png", resolution: "1K", tags: ["Nature"], type: "" },
-      { id: 16, title: "Cherry Blossom Pond 2", category: "Nature", src: "16.png", lowsrc: "low16.png", resolution: "1K", tags: ["Nature"], type: "" },
-      { id: 17, title: "Cherry Blossom Pond 3", category: "Nature", src: "17.png", lowsrc: "low17.png", resolution: "1K", tags: ["Nature"], type: "" },
-      { id: 18, title: "Train with Rainbow", category: "Vehicle", src: "18.png", lowsrc: "low18.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-      { id: 19, title: "Lucky Day 4", category: "Anime", src: "19.png", lowsrc: "low19.png", resolution: "1K", tags: ["Anime"], type: "" },
-      { id: 20, title: "Library 3", category: "Design", src: "20.png", lowsrc: "low20.png", resolution: "1K", tags: ["Design"], type: "" },
-      { id: 21, title: "Train", category: "Vehicle", src: "21.png", lowsrc: "low21.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-      { id: 22, title: "Train 2", category: "Vehicle", src: "22.png", lowsrc: "low22.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-      { id: 23, title: "car", category: "Vehicle", src: "23.png", lowsrc: "low23.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-      { id: 24, title: "car 2", category: "Vehicle", src: "24.png", lowsrc: "low24.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-      { id: 25, title: "car 3", category: "Vehicle", src: "25.png", lowsrc: "low25.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-      { id: 26, title: "car 4", category: "Vehicle", src: "26.png", lowsrc: "low26.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-      { id: 27, title: "car 5", category: "Vehicle", src: "27.png", lowsrc: "low27.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-      { id: 28, title: "car 6", category: "Vehicle", src: "28.png", lowsrc: "low28.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-      { id: 29, title: "Wheat", category: "Nature", src: "29.png", lowsrc: "low29.png", resolution: "1K", tags: ["Nature"], type: "" },
-      { id: 30, title: "Wheat 2", category: "Nature", src: "30.png", lowsrc: "low30.png", resolution: "1K", tags: ["Nature"], type: "" },
-      { id: 31, title: "Wheat 3", category: "Nature", src: "31.png", lowsrc: "low31.png", resolution: "1K", tags: ["Nature"], type: "" },
-      { id: 32, title: "", category: "", src: "32.png", lowsrc: "low32.png", resolution: "", tags: [], type: "" },
-      { id: 33, title: "", category: "", src: "33.png", lowsrc: "low33.png", resolution: "", tags: [], type: "" },
-      { id: 34, title: "", category: "", src: "34.png", lowsrc: "low34.png", resolution: "", tags: [], type: "" },
-      { id: 35, title: "", category: "", src: "35.png", lowsrc: "low35.png", resolution: "", tags: [], type: "" },
-      { id: 36, title: "", category: "", src: "36.png", lowsrc: "low36.png", resolution: "", tags: [], type: "" },
-      { id: 37, title: "", category: "", src: "37.png", lowsrc: "low37.png", resolution: "", tags: [], type: "" },
-      { id: 38, title: "", category: "", src: "38.png", lowsrc: "low38.png", resolution: "", tags: [], type: "" },
-      { id: 39, title: "", category: "", src: "39.png", lowsrc: "low39.png", resolution: "", tags: [], type: "" },
-      { id: 40, title: "", category: "", src: "40.png", lowsrc: "low40.png", resolution: "", tags: [], type: "" },
-      { id: 41, title: "", category: "", src: "41.png", lowsrc: "low41.png", resolution: "", tags: [], type: "" },
-      { id: 42, title: "", category: "", src: "42.png", lowsrc: "low42.png", resolution: "", tags: [], type: "" },
-      { id: 43, title: "", category: "", src: "43.png", lowsrc: "low43.png", resolution: "", tags: [], type: "" },
-      { id: 44, title: "", category: "", src: "44.png", lowsrc: "low44.png", resolution: "", tags: [], type: "" },
-      { id: 45, title: "", category: "", src: "45.png", lowsrc: "low45.png", resolution: "", tags: [], type: "" },
-      { id: 46, title: "", category: "", src: "46.png", lowsrc: "low46.png", resolution: "", tags: [], type: "" },
-      { id: 47, title: "", category: "", src: "47.png", lowsrc: "low47.png", resolution: "", tags: [], type: "" },
-      { id: 48, title: "", category: "", src: "48.png", lowsrc: "low48.png", resolution: "", tags: [], type: "" },
-      { id: 49, title: "", category: "", src: "49.png", lowsrc: "low49.png", resolution: "", tags: [], type: "" },
-      { id: 50, title: "", category: "", src: "50.png", lowsrc: "low50.png", resolution: "", tags: [], type: "" },
-      { id: 51, title: "", category: "", src: "51.png", lowsrc: "low51.png", resolution: "", tags: [], type: "" },
-      { id: 52, title: "", category: "", src: "52.png", lowsrc: "low52.png", resolution: "", tags: [], type: "" },
-      { id: 53, title: "", category: "", src: "53.png", lowsrc: "low53.png", resolution: "", tags: [], type: "" },
-      { id: 54, title: "", category: "", src: "54.png", lowsrc: "low54.png", resolution: "", tags: [], type: "" },
-      { id: 55, title: "", category: "", src: "55.png", lowsrc: "low55.png", resolution: "", tags: [], type: "" },
-      { id: 56, title: "", category: "", src: "56.png", lowsrc: "low56.png", resolution: "", tags: [], type: "" },
-      { id: 57, title: "", category: "", src: "57.png", lowsrc: "low57.png", resolution: "", tags: [], type: "" },
-      { id: 58, title: "", category: "", src: "58.png", lowsrc: "low58.png", resolution: "", tags: [], type: "" },
-      { id: 59, title: "", category: "", src: "59.png", lowsrc: "low59.png", resolution: "", tags: [], type: "" },
-      { id: 60, title: "", category: "", src: "60.png", lowsrc: "low60.png", resolution: "", tags: [], type: "" },
-      { id: 61, title: "", category: "", src: "61.png", lowsrc: "low61.png", resolution: "", tags: [], type: "" },
-      { id: 62, title: "", category: "", src: "62.png", lowsrc: "low62.png", resolution: "", tags: [], type: "" },
-      { id: 63, title: "", category: "", src: "63.png", lowsrc: "low63.png", resolution: "", tags: [], type: "" },
-      { id: 64, title: "", category: "", src: "64.png", lowsrc: "low64.png", resolution: "", tags: [], type: "" }
-    ];
+  { id: 1, title: "Library", category: "Design", src: "1.png", lowsrc: "low1.png", resolution: "1K", tags: ["Design"], type: "Design" },
+  { id: 2, title: "Flying pot", category: "Design", src: "2.png", lowsrc: "low2.png", resolution: "1K", tags: ["Design"], type: "Design" },
+  { id: 3, title: "Library 2", category: "Design", src: "3.png", lowsrc: "low3.png", resolution: "1K", tags: ["Design"], type: "Design" },
+  { id: 4, title: "Shope keeper with customer", category: "Anime", src: "4.png", lowsrc: "low4.png", resolution: "1k", tags: ["Anime"]},
+  { id: 5, title: "Forest with stairs", category: "Nature", src: "5.png", lowsrc: "low5.png", resolution: "1K", tags: ["Nature"], type: "" },
+  { id: 6, title: "Forest with stairs 2", category: "Nature", src: "6.png", lowsrc: "low6.png", resolution: "1K", tags: ["Nature"], type: "" },
+  { id: 7, title: "Forest with stairs 3", category: "Nature", src: "7.png", lowsrc: "low7.png", resolution: "1K", tags: ["Nature"], type: "" },
+  { id: 8, title: "Night Sky", category: "Nature", src: "8.png", lowsrc: "low8.png", resolution: "1K", tags: ["Nature"], type: "" },
+  { id: 9, title: "Lucky Day", category: "Anime", src: "9.png", lowsrc: "low9.png", resolution: "1K", tags: ["Anime"], type: "" },
+  { id: 10, title: "Lucky Day 2", category: "Anime", src: "10.png", lowsrc: "low10.png", resolution: "1K", tags: ["Anime"], type: "" },
+  { id: 11, title: "Flying Tea Pot", category: "Design", src: "11.png", lowsrc: "low11.png", resolution: "1K", tags: ["Design"], type: "" },
+  { id: 12, title: "Flying Tea Pot 2", category: "Design", src: "12.png", lowsrc: "low12.png", resolution: "1K", tags: ["Design"], type: "" },
+  { id: 13, title: "Shope keeper with customer 2", category: "Anime", src: "13.png", lowsrc: "low13.png", resolution: "1k", tags: ["Anime"]},
+  { id: 14, title: "Shope keeper with customer 3", category: "Anime", src: "14.png", lowsrc: "low14.png", resolution: "1k", tags: ["Anime"]},
+  { id: 15, title: "Cherry Blossom Pond", category: "Nature", src: "15.png", lowsrc: "low15.png", resolution: "1K", tags: ["Nature"], type: "" },
+  { id: 16, title: "Cherry Blossom Pond 2", category: "Nature", src: "16.png", lowsrc: "low16.png", resolution: "1K", tags: ["Nature"], type: "" },
+  { id: 17, title: "Cherry Blossom Pond 3", category: "Nature", src: "17.png", lowsrc: "low17.png", resolution: "1K", tags: ["Nature"], type: "" },
+  { id: 18, title: "Train with Rainbow", category: "Vehicle", src: "18.png", lowsrc: "low18.png", resolution: "1K", tags: ["Vehicle"], type: "" },
+  { id: 19, title: "Lucky Day 4", category: "Anime", src: "19.png", lowsrc: "low19.png", resolution: "1K", tags: ["Anime"], type: "" },
+  { id: 20, title: "Library 3", category: "Design", src: "20.png", lowsrc: "low20.png", resolution: "1K", tags: ["Design"], type: "" },
+  { id: 21, title: "Train", category: "Vehicle", src: "21.png", lowsrc: "low21.png", resolution: "1K", tags: ["Vehicle"], type: "" },
+  { id: 22, title: "Train 2", category: "Vehicle", src: "22.png", lowsrc: "low22.png", resolution: "1K", tags: ["Vehicle"], type: "" },
+  { id: 23, title: "car", category: "Vehicle", src: "23.png", lowsrc: "low23.png", resolution: "1K", tags: ["Vehicle"], type: "" },
+  { id: 24, title: "car 2", category: "Vehicle", src: "24.png", lowsrc: "low24.png", resolution: "1K", tags: ["Vehicle"], type: "" },
+  { id: 25, title: "car 3", category: "Vehicle", src: "25.png", lowsrc: "low25.png", resolution: "1K", tags: ["Vehicle"], type: "" },
+  { id: 26, title: "car 4", category: "Vehicle", src: "26.png", lowsrc: "low26.png", resolution: "1K", tags: ["Vehicle"], type: "" },
+  { id: 27, title: "car 5", category: "Vehicle", src: "27.png", lowsrc: "low27.png", resolution: "1K", tags: ["Vehicle"], type: "" },
+  { id: 28, title: "car 6", category: "Vehicle", src: "28.png", lowsrc: "low28.png", resolution: "1K", tags: ["Vehicle"], type: "" },
+  { id: 29, title: "Wheat", category: "Nature", src: "29.png", lowsrc: "low29.png", resolution: "1K", tags: ["Nature"], type: "" },
+  { id: 30, title: "Wheat 2", category: "Nature", src: "30.png", lowsrc: "low30.png", resolution: "1K", tags: ["Nature"], type: "" },
+  { id: 31, title: "Wheat 3", category: "Nature", src: "31.png", lowsrc: "low31.png", resolution: "1K", tags: ["Nature"], type: "" },
+  { id: 32, title: "", category: "", src: "32.png", lowsrc: "low32.png", resolution: "", tags: [], type: "" },
+  { id: 33, title: "", category: "", src: "33.png", lowsrc: "low33.png", resolution: "", tags: [], type: "" },
+  { id: 34, title: "", category: "", src: "34.png", lowsrc: "low34.png", resolution: "", tags: [], type: "" },
+  { id: 35, title: "", category: "", src: "35.png", lowsrc: "low35.png", resolution: "", tags: [], type: "" },
+  { id: 36, title: "", category: "", src: "36.png", lowsrc: "low36.png", resolution: "", tags: [], type: "" },
+  { id: 37, title: "", category: "", src: "37.png", lowsrc: "low37.png", resolution: "", tags: [], type: "" },
+  { id: 38, title: "", category: "", src: "38.png", lowsrc: "low38.png", resolution: "", tags: [], type: "" },
+  { id: 39, title: "", category: "", src: "39.png", lowsrc: "low39.png", resolution: "", tags: [], type: "" },
+  { id: 40, title: "", category: "", src: "40.png", lowsrc: "low40.png", resolution: "", tags: [], type: "" },
+  { id: 41, title: "", category: "", src: "41.png", lowsrc: "low41.png", resolution: "", tags: [], type: "" },
+  { id: 42, title: "", category: "", src: "42.png", lowsrc: "low42.png", resolution: "", tags: [], type: "" },
+  { id: 43, title: "", category: "", src: "43.png", lowsrc: "low43.png", resolution: "", tags: [], type: "" },
+  { id: 44, title: "", category: "", src: "44.png", lowsrc: "low44.png", resolution: "", tags: [], type: "" },
+  { id: 45, title: "", category: "", src: "45.png", lowsrc: "low45.png", resolution: "", tags: [], type: "" },
+  { id: 46, title: "", category: "", src: "46.png", lowsrc: "low46.png", resolution: "", tags: [], type: "" },
+  { id: 47, title: "", category: "", src: "47.png", lowsrc: "low47.png", resolution: "", tags: [], type: "" },
+  { id: 48, title: "", category: "", src: "48.png", lowsrc: "low48.png", resolution: "", tags: [], type: "" },
+  { id: 49, title: "", category: "", src: "49.png", lowsrc: "low49.png", resolution: "", tags: [], type: "" },
+  { id: 50, title: "", category: "", src: "50.png", lowsrc: "low50.png", resolution: "", tags: [], type: "" },
+  { id: 51, title: "", category: "", src: "51.png", lowsrc: "low51.png", resolution: "", tags: [], type: "" },
+  { id: 52, title: "", category: "", src: "52.png", lowsrc: "low52.png", resolution: "", tags: [], type: "" },
+  { id: 53, title: "", category: "", src: "53.png", lowsrc: "low53.png", resolution: "", tags: [], type: "" },
+  { id: 54, title: "", category: "", src: "54.png", lowsrc: "low54.png", resolution: "", tags: [], type: "" },
+  { id: 55, title: "", category: "", src: "55.png", lowsrc: "low55.png", resolution: "", tags: [], type: "" },
+  { id: 56, title: "", category: "", src: "56.png", lowsrc: "low56.png", resolution: "", tags: [], type: "" },
+  { id: 57, title: "", category: "", src: "57.png", lowsrc: "low57.png", resolution: "", tags: [], type: "" },
+  { id: 58, title: "", category: "", src: "58.png", lowsrc: "low58.png", resolution: "", tags: [], type: "" },
+  { id: 59, title: "", category: "", src: "59.png", lowsrc: "low59.png", resolution: "", tags: [], type: "" },
+  { id: 60, title: "", category: "", src: "60.png", lowsrc: "low60.png", resolution: "", tags: [], type: "" },
+  { id: 61, title: "", category: "", src: "61.png", lowsrc: "low61.png", resolution: "", tags: [], type: "" },
+  { id: 62, title: "", category: "", src: "62.png", lowsrc: "low62.png", resolution: "", tags: [], type: "" },
+  { id: 63, title: "", category: "", src: "63.png", lowsrc: "low63.png", resolution: "", tags: [], type: "" },
+  { id: 64, title: "", category: "", src: "64.png", lowsrc: "low64.png", resolution: "", tags: [], type: "" }
+];
+
 
     function displayWallpapers(list = wallpapers) {
       const container = document.getElementById("wallpaper-list");
@@ -290,7 +291,7 @@
         const card = document.createElement("div");
         card.className = "wallpaper-card";
         card.innerHTML = `
-          <img src="${wp.lowsrc}" alt="${wp.title}" loading="lazy" decoding="async"
+          <img src="${wp.src}" alt="${wp.title}" loading="lazy" decoding="async"
             onload="this.classList.add('loaded')"
             onclick="openPreview('${wp.src}', '${wp.title}', '${wp.type}')">
           <div class="wallpaper-title">${wp.title}</div>
@@ -326,18 +327,14 @@
       const img = document.getElementById("preview-img");
       const downloadBtn = document.getElementById("preview-download");
 
-      // Remove lazy loading by creating new image and forcing load
-      const hiResImg = new Image();
-      hiResImg.src = src;
-      hiResImg.onload = function() {
-        img.src = src;
-        img.classList.remove("phone", "pc");
-        img.classList.add(type === "phone" ? "phone" : "pc");
-        modal.style.display = "flex";
-      };
+      img.src = src;
+      img.classList.remove("phone", "pc");
+      img.classList.add(type === "phone" ? "phone" : "pc");
 
       downloadBtn.href = src;
       downloadBtn.download = title.replace(/\s+/g, "_") + ".jpg";
+
+      modal.style.display = "flex";
     }
 
     function closePreview() {
@@ -372,6 +369,19 @@
 
     // NEW FUNCTIONALITY ADDED HERE
     (() => {
+      // Convert all thumbnails to low-res versions
+      const convertToLowRes = () => {
+        document.querySelectorAll('.wallpaper-card img').forEach(img => {
+          if (!img.dataset.converted) {
+            const highResSrc = img.src;
+            const lowResSrc = highResSrc.replace(/(\d+\.png)$/, 'low$1');
+            img.src = lowResSrc;
+            img.dataset.originalSrc = highResSrc;
+            img.dataset.converted = true;
+          }
+        });
+      };
+
       // Handle downloads of high-res versions
       const handleDownloads = (e) => {
         const downloadBtn = e.target.closest('.download-btn');
@@ -381,7 +391,7 @@
           e.preventDefault();
           const highResSrc = downloadBtn ? 
             downloadBtn.href : 
-            wallpaperCard.querySelector('img').src.replace('low', '');
+            wallpaperCard.querySelector('img').dataset.originalSrc;
           
           const tempLink = document.createElement('a');
           tempLink.href = highResSrc;
@@ -394,6 +404,18 @@
 
       // Initialize the functionality
       document.addEventListener('DOMContentLoaded', () => {
+        // Convert existing thumbnails
+        convertToLowRes();
+        
+        // Watch for new thumbnails added dynamically
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach(() => convertToLowRes());
+        });
+        observer.observe(document.getElementById('wallpaper-list'), {
+          childList: true,
+          subtree: true
+        });
+
         // Handle download clicks
         document.addEventListener('click', handleDownloads);
       });
