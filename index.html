@@ -1,14 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- [Previous head content remains exactly the same] -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wallpaper Showcase</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+    }
+
+    header {
+      background: #333;
+      padding: 2em 1em;
+      text-align: center;
+    }
+
+    .logo-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #fff;
+      margin: 0 auto;
+      background: #444;
+    }
+
+    .logo-text {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .search-bar-container {
+      text-align: center;
+      margin: 20px;
+    }
+
+    .search-bar {
+      padding: 10px;
+      width: 90%;
+      max-width: 400px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .category-filters {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .filter-btn {
+      background: #333;
+      color: #fff;
+      border: none;
+      margin: 5px;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .wallpapers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .wallpaper-card {
+      background: #1e1e1e;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.2s;
+      width: 100%;
+    }
+
+    .wallpaper-card:hover {
+      transform: scale(1.03);
+    }
+
+    .wallpaper-card img {
+      width: 100%;
+      height: 300px;
+      display: block;
+      -webkit-user-drag: none;
+      user-select: none;
+      pointer-events: none;
+      object-fit: cover;
+      background: #1e1e1e;
+      transition: filter 0.5s ease, transform 0.5s ease;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -1000px 0; }
+      100% { background-position: 1000px 0; }
+    }
+
+    .wallpaper-card img.lazy-load {
+      filter: blur(10px);
+      background: linear-gradient(90deg, #1e1e1e 25%, #2a2a2a 50%, #1e1e1e 75%);
+      background-size: 200% 100%;
+      animation: shimmer 2s infinite linear;
+    }
+
+    .wallpaper-title,
+    .wallpaper-category {
+      text-align: center;
+      font-size: 14px;
+      padding: 8px 0;
+    }
+
+    .wallpaper-category {
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    .download-btn {
+      display: inline-block;
+      background: #4caf50;
+      color: white;
+      text-align: center;
+      padding: 8px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    #preview-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    #preview-img {
+      max-width: 90%;
+      max-height: 80vh;
+      border-radius: 10px;
+      object-fit: contain;
+      width: auto;
+      height: auto;
+    }
+
+    #close-btn {
+      margin-top: 15px;
+      background: red;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    @media screen and (max-width: 600px) {
+      .search-bar {
+        font-size: 14px;
+      }
+
+      .filter-btn,
+      .download-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
+
+      .wallpaper-title {
+        font-size: 13px;
+      }
+
+      .wallpaper-category {
+        font-size: 11px;
+      }
+    }
+  </style>
 </head>
 <body oncontextmenu="return false">
-  <!-- [Previous body content remains exactly the same until the script] -->
+  <header>
+    <div class="logo-circle"></div>
+    <div class="logo-text">━━ ✦ＮＥＢＵＬＡ ＥＬＩＸＩＲ✦ ━━</div>
+  </header>
+
+  <div class="search-bar-container">
+    <input type="text" id="search-input" class="search-bar" placeholder="Search wallpapers..." />
+  </div>
+
+  <div class="category-filters" id="category-filters"></div>
+
+  <div class="wallpapers" id="wallpaper-list"></div>
+
+  <div id="preview-modal">
+    <img id="preview-img" src="" alt="Preview" />
+    <a id="preview-download" class="download-btn" target="_blank">Download</a>
+    <button id="close-btn" onclick="closePreview()">Close</button>
+  </div>
 
   <script>
     const wallpapers = [
-     { id: 1, title: "Library", category: "Design", src: "1.png", resolution: "1K", tags: ["Design"], type: "Design" },
+      { id: 1, title: "Library", category: "Design", src: "1.png", resolution: "1K", tags: ["Design"], type: "Design" },
 { id: 2, title: "Flying pot", category: "Design", src: "2.png", resolution: "1K", tags: ["Design"], type: "Design" },
 { id: 3, title: "Library 2", category: "Design", src: "3.png", resolution: "1K", tags: ["Design"], type: "Design" },
 { id: 4, title: "Shope keeper with customer", category: "Anime", src: "4.png", resolution: "1k", tags: ["Anime"]},
@@ -75,7 +277,49 @@
 
   
 ];
-    ];
+
+    // Optimized image loader
+    class ImageLoader {
+      constructor() {
+        this.observer = new IntersectionObserver(this.handleIntersect.bind(this), {
+          rootMargin: '200px',
+          threshold: 0.01
+        });
+        this.imageCache = new Set();
+      }
+
+      handleIntersect(entries) {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            this.loadFullImage(img);
+            this.observer.unobserve(img);
+          }
+        });
+      }
+
+      loadFullImage(img) {
+        if (this.imageCache.has(img.dataset.src)) {
+          img.src = img.dataset.src;
+          img.classList.remove('lazy-load');
+          return;
+        }
+
+        const tempImg = new Image();
+        tempImg.src = img.dataset.src;
+        tempImg.onload = () => {
+          img.src = img.dataset.src;
+          img.classList.remove('lazy-load');
+          this.imageCache.add(img.dataset.src);
+        };
+      }
+
+      observe(img) {
+        this.observer.observe(img);
+      }
+    }
+
+    const imageLoader = new ImageLoader();
 
     function displayWallpapers(list = wallpapers) {
       const container = document.getElementById("wallpaper-list");
@@ -86,13 +330,12 @@
         card.className = "wallpaper-card";
         card.innerHTML = `
           <img 
-            src="${wp.src}" 
-            data-fullsrc="${wp.src}"
+            class="lazy-load"
+            data-src="${wp.src}"
             alt="${wp.title}"
             loading="lazy"
             decoding="async"
             fetchpriority="low"
-            onload="this.dataset.loaded = true"
             onclick="openPreview('${wp.src}', '${wp.title}', '${wp.type}')">
           <div class="wallpaper-title">${wp.title}</div>
           <div class="wallpaper-category">Category: ${wp.category}</div>
@@ -100,21 +343,72 @@
         `;
 
         const img = card.querySelector('img');
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting && !img.dataset.loaded) {
-              img.src = img.dataset.fullsrc;
-              img.dataset.loaded = true;
-            }
-          });
-        }, { rootMargin: '200px' });
-
-        observer.observe(img);
+        imageLoader.observe(img);
         container.appendChild(card);
       });
     }
 
-    // [Rest of your JavaScript functions remain exactly the same]
+    function displayCategoryFilters() {
+      const container = document.getElementById("category-filters");
+      container.innerHTML = "";
+      const categories = [...new Set(wallpapers.map(wp => wp.category))];
+
+      const allBtn = document.createElement("button");
+      allBtn.className = "filter-btn";
+      allBtn.textContent = "All";
+      allBtn.onclick = () => displayWallpapers();
+      container.appendChild(allBtn);
+
+      categories.forEach(cat => {
+        const btn = document.createElement("button");
+        btn.className = "filter-btn";
+        btn.textContent = cat;
+        btn.onclick = () => displayWallpapers(wallpapers.filter(wp => wp.category === cat));
+        container.appendChild(btn);
+      });
+    }
+
+    function openPreview(src, title, type) {
+      const modal = document.getElementById("preview-modal");
+      const img = document.getElementById("preview-img");
+      const downloadBtn = document.getElementById("preview-download");
+
+      // Show loading state
+      img.src = '';
+      img.className = 'lazy-load';
+      modal.style.display = "flex";
+
+      // Load full image
+      const fullImg = new Image();
+      fullImg.src = src;
+      fullImg.onload = () => {
+        img.src = src;
+        img.className = '';
+      };
+
+      downloadBtn.href = src;
+      downloadBtn.download = title.replace(/\s+/g, "_") + ".jpg";
+    }
+
+    function closePreview() {
+      document.getElementById("preview-modal").style.display = "none";
+    }
+
+    document.getElementById("search-input").addEventListener("input", function() {
+      const query = this.value.toLowerCase();
+      const filtered = wallpapers.filter(wp =>
+        wp.title.toLowerCase().includes(query) ||
+        wp.category.toLowerCase().includes(query) ||
+        (wp.tags && wp.tags.some(tag => tag.toLowerCase().includes(query)))
+      );
+      displayWallpapers(filtered);
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll("img").forEach(img => img.setAttribute("draggable", "false"));
+      displayCategoryFilters();
+      displayWallpapers();
+    });
   </script>
 </body>
 </html>
