@@ -1,316 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Wallpaper Showcase</title>
+  <meta charset="UTF-8">
+  <title>Image Gallery</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
+      font-family: sans-serif;
+      background: #f9f9f9;
       margin: 0;
       padding: 20px;
     }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    .search-bar {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .search-bar input {
-      padding: 10px;
-      font-size: 16px;
-      width: 300px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .category-filters {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .filter-btn {
-      padding: 10px 15px;
-      margin: 5px;
-      border: none;
-      background: #007bff;
-      color: white;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-
-    .filter-btn:hover {
-      background: #0056b3;
-    }
-
-    .wallpapers {
+    .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
     }
-
-    .wallpaper-card {
+    .card {
       background: white;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      padding: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
       text-align: center;
-      padding-bottom: 10px;
     }
-
-    .wallpaper-card img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-      cursor: pointer;
+    .card img {
+      max-width: 100%;
+      border-radius: 8px;
     }
-
     .title {
       font-weight: bold;
       margin: 10px 0 5px;
     }
-
-    .category {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 5px;
-    }
-
     .download-btn {
-      padding: 8px 12px;
-      background: #28a745;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      font-size: 14px;
-    }
-
-    .preview-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      background: rgba(0,0,0,0.8);
-      z-index: 1000;
-    }
-
-    .preview-content {
-      max-width: 90%;
-      max-height: 90%;
-      text-align: center;
-    }
-
-    .preview-content img {
-      max-width: 100%;
-      max-height: 80vh;
-      border-radius: 10px;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      font-size: 30px;
-      color: white;
-      cursor: pointer;
-    }
-
-    .preview-download {
-      display: inline-block;
       margin-top: 10px;
-      background: #28a745;
-      padding: 10px 15px;
+      padding: 8px 12px;
+      background: #007bff;
       color: white;
-      text-decoration: none;
-      border-radius: 5px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .download-btn:hover {
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
-  <h1>Wallpaper Showcase</h1>
 
-  <div class="search-bar">
-    <input type="text" id="search-input" placeholder="Search wallpapers..." />
-  </div>
-
-  <div class="category-filters" id="category-filters"></div>
-
-  <div class="wallpapers" id="wallpapers"></div>
-
-  <div class="preview-modal" id="preview-modal">
-    <div class="preview-content">
-      <span class="close-btn" onclick="closePreview()">&times;</span>
-      <img id="preview-img" />
-      <br />
-      <a id="preview-download" class="preview-download" download>Download</a>
-    </div>
-  </div>
+  <h1>Image Gallery (Low-res Preview + HD Download)</h1>
+  <div class="gallery" id="gallery"></div>
 
   <script>
-    const wallpapers = [
-      { id: 1, title: "Library", category: "Design", src: "1.png", lowsrc: "low1.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 2, title: "Flying pot", category: "Design", src: "2.png", lowsrc: "low2.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 3, title: "Library 2", category: "Design", src: "3.png", lowsrc: "low3.png", resolution: "1K", tags: ["Design"], type: "Design" },
-  { id: 4, title: "Shope keeper with customer", category: "Anime", src: "4.png", lowsrc: "low4.png", resolution: "1k", tags: ["Anime"]},
-  { id: 5, title: "Forest with stairs", category: "Nature", src: "5.png", lowsrc: "low5.png", resolution: "1K", tags: ["Nature"], type: "" },
-  { id: 6, title: "Forest with stairs 2", category: "Nature", src: "6.png", lowsrc: "low6.png", resolution: "1K", tags: ["Nature"], type: "" },
-  { id: 7, title: "Forest with stairs 3", category: "Nature", src: "7.png", lowsrc: "low7.png", resolution: "1K", tags: ["Nature"], type: "" },
-  { id: 8, title: "Night Sky", category: "Nature", src: "8.png", lowsrc: "low8.png", resolution: "1K", tags: ["Nature"], type: "" },
-  { id: 9, title: "Lucky Day", category: "Anime", src: "9.png", lowsrc: "low9.png", resolution: "1K", tags: ["Anime"], type: "" },
-  { id: 10, title: "Lucky Day 2", category: "Anime", src: "10.png", lowsrc: "low10.png", resolution: "1K", tags: ["Anime"], type: "" },
-  { id: 11, title: "Flying Tea Pot", category: "Design", src: "11.png", lowsrc: "low11.png", resolution: "1K", tags: ["Design"], type: "" },
-  { id: 12, title: "Flying Tea Pot 2", category: "Design", src: "12.png", lowsrc: "low12.png", resolution: "1K", tags: ["Design"], type: "" },
-  { id: 13, title: "Shope keeper with customer 2", category: "Anime", src: "13.png", lowsrc: "low13.png", resolution: "1k", tags: ["Anime"]},
-  { id: 14, title: "Shope keeper with customer 3", category: "Anime", src: "14.png", lowsrc: "low14.png", resolution: "1k", tags: ["Anime"]},
-  { id: 15, title: "Cherry Blossom Pond", category: "Nature", src: "15.png", lowsrc: "low15.png", resolution: "1K", tags: ["Nature"], type: "" },
-  { id: 16, title: "Cherry Blossom Pond 2", category: "Nature", src: "16.png", lowsrc: "low16.png", resolution: "1K", tags: ["Nature"], type: "" },
-  { id: 17, title: "Cherry Blossom Pond 3", category: "Nature", src: "17.png", lowsrc: "low17.png", resolution: "1K", tags: ["Nature"], type: "" },
-  { id: 18, title: "Train with Rainbow", category: "Vehicle", src: "18.png", lowsrc: "low18.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-  { id: 19, title: "Lucky Day 4", category: "Anime", src: "19.png", lowsrc: "low19.png", resolution: "1K", tags: ["Anime"], type: "" },
-  { id: 20, title: "Library 3", category: "Design", src: "20.png", lowsrc: "low20.png", resolution: "1K", tags: ["Design"], type: "" },
-  { id: 21, title: "Train", category: "Vehicle", src: "21.png", lowsrc: "low21.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-  { id: 22, title: "Train 2", category: "Vehicle", src: "22.png", lowsrc: "low22.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-  { id: 23, title: "car", category: "Vehicle", src: "23.png", lowsrc: "low23.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-  { id: 24, title: "car 2", category: "Vehicle", src: "24.png", lowsrc: "low24.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-  { id: 25, title: "car 3", category: "Vehicle", src: "25.png", lowsrc: "low25.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-  { id: 26, title: "car 4", category: "Vehicle", src: "26.png", lowsrc: "low26.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-  { id: 27, title: "car 5", category: "Vehicle", src: "27.png", lowsrc: "low27.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-  { id: 28, title: "car 6", category: "Vehicle", src: "28.png", lowsrc: "low28.png", resolution: "1K", tags: ["Vehicle"], type: "" },
-  { id: 29, title: "Wheat", category: "Nature", src: "29.png", lowsrc: "low29.png", resolution: "1K", tags: ["Nature"], type: "" },
-  { id: 30, title: "Wheat 2", category: "Nature", src: "30.png", lowsrc: "low30.png", resolution: "1K", tags: ["Nature"], type: "" },
-  { id: 31, title: "Wheat 3", category: "Nature", src: "31.png", lowsrc: "low31.png", resolution: "1K", tags: ["Nature"], type: "" },
-  { id: 32, title: "", category: "", src: "32.png", lowsrc: "low32.png", resolution: "", tags: [], type: "" },
-  { id: 33, title: "", category: "", src: "33.png", lowsrc: "low33.png", resolution: "", tags: [], type: "" },
-  { id: 34, title: "", category: "", src: "34.png", lowsrc: "low34.png", resolution: "", tags: [], type: "" },
-  { id: 35, title: "", category: "", src: "35.png", lowsrc: "low35.png", resolution: "", tags: [], type: "" },
-  { id: 36, title: "", category: "", src: "36.png", lowsrc: "low36.png", resolution: "", tags: [], type: "" },
-  { id: 37, title: "", category: "", src: "37.png", lowsrc: "low37.png", resolution: "", tags: [], type: "" },
-  { id: 38, title: "", category: "", src: "38.png", lowsrc: "low38.png", resolution: "", tags: [], type: "" },
-  { id: 39, title: "", category: "", src: "39.png", lowsrc: "low39.png", resolution: "", tags: [], type: "" },
-  { id: 40, title: "", category: "", src: "40.png", lowsrc: "low40.png", resolution: "", tags: [], type: "" },
-  { id: 41, title: "", category: "", src: "41.png", lowsrc: "low41.png", resolution: "", tags: [], type: "" },
-  { id: 42, title: "", category: "", src: "42.png", lowsrc: "low42.png", resolution: "", tags: [], type: "" },
-  { id: 43, title: "", category: "", src: "43.png", lowsrc: "low43.png", resolution: "", tags: [], type: "" },
-  { id: 44, title: "", category: "", src: "44.png", lowsrc: "low44.png", resolution: "", tags: [], type: "" },
-  { id: 45, title: "", category: "", src: "45.png", lowsrc: "low45.png", resolution: "", tags: [], type: "" },
-  { id: 46, title: "", category: "", src: "46.png", lowsrc: "low46.png", resolution: "", tags: [], type: "" },
-  { id: 47, title: "", category: "", src: "47.png", lowsrc: "low47.png", resolution: "", tags: [], type: "" },
-  { id: 48, title: "", category: "", src: "48.png", lowsrc: "low48.png", resolution: "", tags: [], type: "" },
-  { id: 49, title: "", category: "", src: "49.png", lowsrc: "low49.png", resolution: "", tags: [], type: "" },
-  { id: 50, title: "", category: "", src: "50.png", lowsrc: "low50.png", resolution: "", tags: [], type: "" },
-  { id: 51, title: "", category: "", src: "51.png", lowsrc: "low51.png", resolution: "", tags: [], type: "" },
-  { id: 52, title: "", category: "", src: "52.png", lowsrc: "low52.png", resolution: "", tags: [], type: "" },
-  { id: 53, title: "", category: "", src: "53.png", lowsrc: "low53.png", resolution: "", tags: [], type: "" },
-  { id: 54, title: "", category: "", src: "54.png", lowsrc: "low54.png", resolution: "", tags: [], type: "" },
-  { id: 55, title: "", category: "", src: "55.png", lowsrc: "low55.png", resolution: "", tags: [], type: "" },
-  { id: 56, title: "", category: "", src: "56.png", lowsrc: "low56.png", resolution: "", tags: [], type: "" },
-  { id: 57, title: "", category: "", src: "57.png", lowsrc: "low57.png", resolution: "", tags: [], type: "" },
-  { id: 58, title: "", category: "", src: "58.png", lowsrc: "low58.png", resolution: "", tags: [], type: "" },
-  { id: 59, title: "", category: "", src: "59.png", lowsrc: "low59.png", resolution: "", tags: [], type: "" },
-  { id: 60, title: "", category: "", src: "60.png", lowsrc: "low60.png", resolution: "", tags: [], type: "" },
-  { id: 61, title: "", category: "", src: "61.png", lowsrc: "low61.png", resolution: "", tags: [], type: "" },
-  { id: 62, title: "", category: "", src: "62.png", lowsrc: "low62.png", resolution: "", tags: [], type: "" },
-  { id: 63, title: "", category: "", src: "63.png", lowsrc: "low63.png", resolution: "", tags: [], type: "" },
-  { id: 64, title: "", category: "", src: "64.png", lowsrc: "low64.png", resolution: "", tags: [], type: "" }
-];
+    const images = [
+      { id: 1, title: "Library", category: "Design", src: "1.png", lowsrc: "low1.png" },
+      { id: 2, title: "Flying pot", category: "Design", src: "2.png", lowsrc: "low2.png" },
+      { id: 3, title: "Library 2", category: "Design", src: "3.png", lowsrc: "low3.png" },
+      { id: 4, title: "Shopkeeper with customer", category: "Anime", src: "4.png", lowsrc: "low4.png" },
+      { id: 5, title: "Forest with stairs", category: "Nature", src: "5.png", lowsrc: "low5.png" },
+      // You can add the rest of your list here...
+    ];
 
-    function displayWallpapers(list = wallpapers) {
-      const container = document.getElementById("wallpapers");
-      container.innerHTML = "";
+    const gallery = document.getElementById('gallery');
 
-      list.forEach(wp => {
-        const card = document.createElement("div");
-        card.className = "wallpaper-card";
+    images.forEach(img => {
+      const card = document.createElement('div');
+      card.className = 'card';
 
-        const img = document.createElement("img");
-        img.src = wp.src;
-        img.alt = wp.title;
-        img.onclick = () => openPreview(wp.src, wp.title, wp.type);
+      const image = document.createElement('img');
+      image.src = img.lowsrc;
+      image.alt = img.title;
 
-        const title = document.createElement("div");
-        title.className = "title";
-        title.textContent = wp.title;
+      const title = document.createElement('div');
+      title.className = 'title';
+      title.textContent = img.title;
 
-        const category = document.createElement("div");
-        category.className = "category";
-        category.textContent = wp.category;
+      const button = document.createElement('button');
+      button.className = 'download-btn';
+      button.textContent = 'Download HD';
+      button.onclick = () => {
+        const link = document.createElement('a');
+        link.href = img.src;
+        link.download = img.src.split('/').pop(); // Downloads with original filename
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
 
-        const download = document.createElement("a");
-        download.className = "download-btn";
-        download.href = wp.src;
-        download.download = `${wp.title.replace(/\s+/g, '_')}.jpg`;
-        download.textContent = "Download";
-
-        card.appendChild(img);
-        card.appendChild(title);
-        card.appendChild(category);
-        card.appendChild(download);
-
-        container.appendChild(card);
-      });
-    }
-
-    function displayCategoryFilters() {
-      const container = document.getElementById("category-filters");
-      const categories = Array.from(new Set(wallpapers.map(w => w.category).filter(Boolean)));
-
-      const allBtn = document.createElement("button");
-      allBtn.textContent = "All";
-      allBtn.className = "filter-btn";
-      allBtn.onclick = () => displayWallpapers();
-      container.appendChild(allBtn);
-
-      categories.forEach(category => {
-        const btn = document.createElement("button");
-        btn.className = "filter-btn";
-        btn.textContent = category;
-        btn.onclick = () => {
-          const filtered = wallpapers.filter(w => w.category === category);
-          displayWallpapers(filtered);
-        };
-        container.appendChild(btn);
-      });
-    }
-
-    function openPreview(src, title, type) {
-      const modal = document.getElementById("preview-modal");
-      const img = document.getElementById("preview-img");
-      const downloadBtn = document.getElementById("preview-download");
-
-      img.src = src;
-      img.className = type === "phone" ? "phone" : "pc";
-      downloadBtn.href = src;
-      downloadBtn.download = `${title.replace(/\s+/g, '_')}.jpg`;
-      modal.style.display = "flex";
-    }
-
-    function closePreview() {
-      document.getElementById("preview-modal").style.display = "none";
-    }
-
-    document.getElementById("search-input").addEventListener("input", function () {
-      const query = this.value.toLowerCase();
-      const filtered = wallpapers.filter(wp =>
-        wp.title.toLowerCase().includes(query) ||
-        wp.category.toLowerCase().includes(query)
-      );
-      displayWallpapers(filtered);
+      card.appendChild(image);
+      card.appendChild(title);
+      card.appendChild(button);
+      gallery.appendChild(card);
     });
-
-    // Initialize
-    displayWallpapers();
-    displayCategoryFilters();
   </script>
+
 </body>
 </html>
