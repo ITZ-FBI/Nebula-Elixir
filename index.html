@@ -2,206 +2,368 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wallpaper Showcase</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      background-color: #f0f0f0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
     }
-    .header {
-      padding: 10px;
-      background-color: #333;
-      color: white;
+
+    header {
+      background: url('ani.gif') no-repeat center center/cover;
+      padding: 2em 1em;
       text-align: center;
     }
-    .search-bar {
-      margin: 15px;
-      text-align: center;
+
+    .logo-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #fff;
+      margin: 0 auto;
     }
-    .search-bar input {
-      padding: 10px;
-      width: 60%;
-      max-width: 400px;
+
+    .logo-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .logo-text {
+      font-family: 'Courier New', Courier, monospace;
       font-size: 16px;
+      margin-top: 10px;
     }
-    .categories {
+
+    .search-bar-container {
       text-align: center;
-      margin-bottom: 10px;
+      margin: 20px;
     }
-    .categories button {
-      margin: 5px;
-      padding: 10px 15px;
+
+    .search-bar {
+      padding: 10px;
+      width: 90%;
+      max-width: 400px;
       border: none;
       border-radius: 5px;
-      background-color: #444;
-      color: white;
+      font-size: 16px;
+    }
+
+    .category-filters {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .filter-btn {
+      background: #333;
+      color: #fff;
+      border: none;
+      margin: 5px;
+      padding: 8px 16px;
       cursor: pointer;
-    }
-    .categories button:hover {
-      background-color: #666;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 15px;
-      padding: 15px;
-    }
-    .wallpaper {
-      background-color: white;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    .wallpaper:hover {
-      transform: scale(1.03);
-    }
-    .wallpaper img {
-      width: 100%;
-      display: block;
-    }
-    .meta {
-      padding: 10px;
+      border-radius: 4px;
       font-size: 14px;
     }
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
+
+    .wallpapers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      padding: 20px;
     }
-    .modal img {
-      max-width: 90%;
-      max-height: 80%;
+
+    .wallpaper-card {
+      background: #1e1e1e;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.2s;
+      width: 100%;
     }
-    .modal .close {
-      position: absolute;
-      top: 20px;
-      right: 40px;
-      font-size: 30px;
+
+    .wallpaper-card:hover {
+      transform: scale(1.03);
+    }
+
+    .wallpaper-card img {
+      width: 100%;
+      display: block;
+      -webkit-user-drag: none;
+      user-select: none;
+      pointer-events: none;
+      filter: blur(2px);
+      transform: scale(1.02);
+      transition: filter 0.3s ease, transform 0.3s ease;
+    }
+
+    .wallpaper-card img.loaded {
+      filter: none;
+      transform: none;
+    }
+
+    .wallpaper-title,
+    .wallpaper-category {
+      text-align: center;
+      font-size: 14px;
+      padding: 8px 0;
+    }
+
+    .wallpaper-category {
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    .download-btn {
+      display: inline-block;
+      background: #4caf50;
       color: white;
+      text-align: center;
+      padding: 8px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+      margin: 10px;
       cursor: pointer;
     }
-    .modal .download {
-      position: absolute;
-      bottom: 40px;
-      background: #fff;
-      padding: 10px 20px;
+
+    #preview-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    #preview-img {
+      max-width: 90%;
+      max-height: 80vh;
+      border-radius: 10px;
+      object-fit: contain;
+      width: auto;
+      height: auto;
+    }
+
+    #close-btn {
+      margin-top: 15px;
+      background: red;
+      color: white;
+      border: none;
+      padding: 8px 16px;
       border-radius: 5px;
-      font-size: 16px;
-      text-decoration: none;
-      color: #000;
+      cursor: pointer;
+    }
+
+    .pagination {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .page-btn {
+      background: #333;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      margin: 0 5px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .search-bar {
+        font-size: 14px;
+      }
+
+      .filter-btn,
+      .download-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
+
+      .wallpaper-title {
+        font-size: 13px;
+      }
+
+      .wallpaper-category {
+        font-size: 11px;
+      }
     }
   </style>
 </head>
-<body>
+<body oncontextmenu="return false">
+  <header>
+    <div class="logo-circle">
+      <img src="logo.png" alt="Logo" />
+    </div>
+    <div class="logo-text">━━ ✦ＮＥＢＵＬＡ ＥＬＩＸＩＲ✦ ━━</div>
+  </header>
 
-  <div class="header">
-    <h1>Wallpaper Gallery</h1>
+  <div class="search-bar-container">
+    <input type="text" id="search-input" class="search-bar" placeholder="Search wallpapers..." />
   </div>
 
-  <div class="search-bar">
-    <input type="text" id="search" placeholder="Search wallpapers by title or category...">
-  </div>
+  <div class="category-filters" id="category-filters"></div>
 
-  <div class="categories">
-    <button onclick="filterCategory('All')">All</button>
-    <button onclick="filterCategory('Anime')">Anime</button>
-    <button onclick="filterCategory('Nature')">Nature</button>
-    <button onclick="filterCategory('Technology')">Technology</button>
-  </div>
+  <div class="wallpapers" id="wallpaper-list"></div>
 
-  <div class="gallery" id="wallpaperGallery"></div>
+  <div class="pagination" id="pagination"></div>
 
-  <div class="modal" id="previewModal">
-    <span class="close" onclick="closePreview()">&times;</span>
-    <img id="previewImage" src="">
-    <a id="downloadLink" class="download" download>Download</a>
+  <div id="preview-modal">
+    <img id="preview-img" src="" alt="Preview" />
+    <a id="preview-download" class="download-btn" target="_blank" style="display: none;">Download High Quality Image</a>
+    <button id="close-btn" onclick="closePreview()">Close</button>
   </div>
 
   <script>
     const wallpapers = [
-      {
-        id: 1,
-        title: "Sunset Over Mountains",
-        category: "Nature",
-        resolution: "1920x1080",
-        tags: ["sunset", "mountains", "sky"],
-        type: "JPG",
-        src: "1.png",
-        lowsrc: "low1.png"
-      },
-      {
-        id: 2,
-        title: "City Lights",
-        category: "Technology",
-        resolution: "3840x2160",
-        tags: ["city", "night", "lights"],
-        type: "JPG",
-        src: "2.png",
-        lowsrc: "low2.png"
-      },
-      // Add more wallpapers...
+      { id: 1, title: "Sunset Over Mountains", category: "Nature", src: "1.png", lowsrc: "low1.png" },
+      { id: 2, title: "City Lights", category: "Technology", src: "2.png", lowsrc: "low2.png" },
+      { id: 3, title: "Forest Path", category: "Nature", src: "3.png", lowsrc: "low3.png" },
+      { id: 4, title: "Ocean Waves", category: "Nature", src: "4.png", lowsrc: "low4.png" },
+      { id: 5, title: "Starry Night", category: "Space", src: "5.png", lowsrc: "low5.png" },
+      { id: 6, title: "Mountain Range", category: "Nature", src: "6.png", lowsrc: "low6.png" },
+      { id: 7, title: "City Skyline", category: "Technology", src: "7.png", lowsrc: "low7.png" },
+      { id: 8, title: "Desert Dunes", category: "Nature", src: "8.png", lowsrc: "low8.png" },
+      { id: 9, title: "Abstract Art", category: "Abstract", src: "9.png", lowsrc: "low9.png" },
+      { id: 10, title: "Winter Wonderland", category: "Nature", src: "10.png", lowsrc: "low10.png" },
+      { id: 11, title: "Urban Jungle", category: "Technology", src: "11.png", lowsrc: "low11.png" },
+      { id: 12, title: "Calm Lake", category: "Nature", src: "12.png", lowsrc: "low12.png" },
+      { id: 13, title: "Galaxy View", category: "Space", src: "13.png", lowsrc: "low13.png" },
+      { id: 14, title: "Colorful Sunset", category: "Nature", src: "14.png", lowsrc: "low14.png" },
+      { id: 15, title: "Tech Circuit", category: "Technology", src: "15.png", lowsrc: "low15.png" },
+      { id: 16, title: "Rainy Day", category: "Nature", src: "16.png", lowsrc: "low16.png" },
+      { id: 17, title: "Futuristic City", category: "Technology", src: "17.png", lowsrc: "low17.png" },
+      { id: 18, title: "Peaceful Forest", category: "Nature", src: "18.png", lowsrc: "low18.png" },
+      { id: 19, title: "Night Sky", category: "Space", src: "19.png", lowsrc: "low19.png" },
+      { id: 20, title: "Colorful Waves", category: "Abstract", src: "20.png", lowsrc: "low20.png" },
+      { id: 21, title: "Mountain Reflection", category: "Nature", src: "21.png", lowsrc: "low21.png" },
+      { id: 22, title: "City at Dusk", category: "Technology", src: "22.png", lowsrc: "low22.png" },
+      { id: 23, title: "Desert Sunset", category: "Nature", src: "23.png", lowsrc: "low23.png" },
+      { id: 24, title: "Abstract Shapes", category: "Abstract", src: "24.png", lowsrc: "low24.png" },
+      { id: 25, title: "Foggy Mountains", category: "Nature", src: "25.png", lowsrc: "low25.png" },
+      { id: 26, title: "Cyberpunk City", category: "Technology", src: "26.png", lowsrc: "low26.png" },
+      { id: 27, title: "Starry Ocean", category: "Space", src: "27.png", lowsrc: "low27.png" },
+      { id: 28, title: "Colorful Forest", category: "Nature", src: "28.png", lowsrc: "low28.png" },
+      { id: 29, title: "Tech Landscape", category: "Technology", src: "29.png", lowsrc: "low29.png" },
+      { id: 30, title: "Abstract Colors", category: "Abstract", src: "30.png", lowsrc: "low30.png" },
+      { id: 31, title: "Sunset Beach", category: "Nature", src: "31.png", lowsrc: "low31.png" },
+      { id: 32, title: "Futuristic Landscape", category: "Technology", src: "32.png", lowsrc: "low32.png" },
+      { id: 33, title: "Galaxy Swirl", category: "Space", src: "33.png", lowsrc: "low33.png" },
+      { id: 34, title: "Mountain Sunrise", category: "Nature", src: "34.png", lowsrc: "low34.png" },
+      { id: 35, title: "City Park", category: "Nature", src: "35.png", lowsrc: "low35.png" },
+      { id: 36, title: "Abstract Waves", category: "Abstract", src: "36.png", lowsrc: "low36.png" },
+      { id: 37, title: "Night City", category: "Technology", src: "37.png", lowsrc: "low37.png" },
+      { id: 38, title: "Sunny Meadow", category: "Nature", src: "38.png", lowsrc: "low38.png" },
+      { id: 39, title: "Underwater Scene", category: "Nature", src: "39.png", lowsrc: "low39.png" },
+      { id: 40, title: "Abstract Lines", category: "Abstract", src: "40.png", lowsrc: "low40.png" },
+      { id: 41, title: "Desert Night", category: "Nature", src: "41.png", lowsrc: "low41.png" },
+      { id: 42, title: "Tech Cityscape", category: "Technology", src: "42.png", lowsrc: "low42.png" },
+      { id: 43, title: "Starry Sky", category: "Space", src: "43.png", lowsrc: "low43.png" },
+      { id: 44, title: "Colorful Mountains", category: "Nature", src: "44.png", lowsrc: "low44.png" },
+      { id: 45, title: "Abstract Geometry", category: "Abstract", src: "45.png", lowsrc: "low45.png" },
+      { id: 46, title: "Rainy City", category: "Technology", src: "46.png", lowsrc: "low46.png" },
+      { id: 47, title: "Forest Stream", category: "Nature", src: "47.png", lowsrc: "low47.png" },
+      { id: 48, title: "Galactic View", category: "Space", src: "48.png", lowsrc: "low48.png" },
+      { id: 49, title: "Abstract Patterns", category: "Abstract", src: "49.png", lowsrc: "low49.png" },
+      { id: 50, title: "Mountain Lake", category: "Nature", src: "50.png", lowsrc: "low50.png" },
+      { id: 51, title: "Futuristic Tech", category: "Technology", src: "51.png", lowsrc: "low51.png" },
+      { id: 52, title: "Ocean Sunset", category: "Nature", src: "52.png", lowsrc: "low52.png" },
+      { id: 53, title: "Abstract Light", category: "Abstract", src: "53.png", lowsrc: "low53.png" },
+      { id: 54, title: "City Nightscape", category: "Technology", src: "54.png", lowsrc: "low54.png" },
+      { id: 55, title: "Starry Forest", category: "Nature", src: "55.png", lowsrc: "low55.png" },
+      { id: 56, title: "Abstract Waves", category: "Abstract", src: "56.png", lowsrc: "low56.png" },
+      { id: 57, title: "Desert Oasis", category: "Nature", src: "57.png", lowsrc: "low57.png" },
+      { id: 58, title: "Tech Design", category: "Technology", src: "58.png", lowsrc: "low58.png" },
+      { id: 59, title: "Galaxy Nebula", category: "Space", src: "59.png", lowsrc: "low59.png" },
+      { id: 60, title: "Colorful Abstract", category: "Abstract", src: "60.png", lowsrc: "low60.png" },
+      { id: 61, title: "Mountain Trail", category: "Nature", src: "61.png", lowsrc: "low61.png" },
+      { id: 62, title: "Urban Night", category: "Technology", src: "62.png", lowsrc: "low62.png" },
+      { id: 63, title: "Starry Night Sky", category: "Space", src: "63.png", lowsrc: "low63.png" },
+      { id: 64, title: "Abstract Colors", category: "Abstract", src: "64.png", lowsrc: "low64.png" }
     ];
 
-    const gallery = document.getElementById("wallpaperGallery");
-    const modal = document.getElementById("previewModal");
-    const previewImage = document.getElementById("previewImage");
-    const downloadLink = document.getElementById("downloadLink");
+    const gallery = document.getElementById("wallpaper-list");
+    const modal = document.getElementById("preview-modal");
+    const previewImage = document.getElementById("preview-img");
+    const downloadLink = document.getElementById("preview-download");
+    const pagination = document.getElementById("pagination");
+
+    const itemsPerPage = 12;
+    let currentPage = 1;
 
     function renderWallpapers(data) {
       gallery.innerHTML = "";
-      data.forEach(wallpaper => {
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const paginatedItems = data.slice(start, end);
+
+      paginatedItems.forEach(wallpaper => {
         const div = document.createElement("div");
-        div.className = "wallpaper";
+        div.className = "wallpaper-card";
+
         div.innerHTML = `
           <img src="${convertToLowRes(wallpaper)}" alt="${wallpaper.title}" onclick="showPreview('${wallpaper.src}')">
-          <div class="meta">
-            <strong>${wallpaper.title}</strong><br>
-            Category: ${wallpaper.category}<br>
-            Resolution: ${wallpaper.resolution}<br>
-            Type: ${wallpaper.type}
-          </div>
+          <div class="wallpaper-title">${wallpaper.title}</div>
+          <div class="wallpaper-category">Category: ${wallpaper.category}</div>
         `;
         gallery.appendChild(div);
       });
+
+      renderPagination(data.length);
+    }
+
+    function renderPagination(totalItems) {
+      pagination.innerHTML = "";
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+      for (let i = 1; i <= totalPages; i++) {
+        const button = document.createElement("button");
+        button.className = "page-btn";
+        button.innerText = i;
+        button.onclick = () => {
+          currentPage = i;
+          renderWallpapers(wallpapers);
+        };
+        pagination.appendChild(button);
+      }
     }
 
     function convertToLowRes(wallpaper) {
       return wallpaper.lowsrc || wallpaper.src;
     }
 
-    function filterCategory(category) {
-      if (category === "All") {
-        renderWallpapers(wallpapers);
-      } else {
-        renderWallpapers(wallpapers.filter(w => w.category === category));
-      }
-    }
-
     function showPreview(src) {
       modal.style.display = "flex";
       previewImage.src = src;
-      downloadLink.href = src;
+      downloadLink.href = src; // Set the download link to the high-quality image URL
+      const imageName = src.split('/').pop(); // Extract the image name from the URL
+      downloadLink.download = imageName; // Set the download attribute to the image name
+      downloadLink.style.display = "block"; // Show the download button
     }
 
     function closePreview() {
       modal.style.display = "none";
       previewImage.src = "";
+      downloadLink.style.display = "none"; // Hide the download button when closing the modal
     }
 
-    document.getElementById("search").addEventListener("input", e => {
+    document.getElementById("search-input").addEventListener("input", e => {
       const keyword = e.target.value.toLowerCase();
       const filtered = wallpapers.filter(w =>
         w.title.toLowerCase().includes(keyword) ||
         w.category.toLowerCase().includes(keyword)
       );
+      currentPage = 1; // Reset to first page on search
       renderWallpapers(filtered);
     });
 
