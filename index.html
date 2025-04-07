@@ -57,6 +57,10 @@
     .category-filters {
       text-align: center;
       margin-bottom: 20px;
+      flex-wrap: wrap;
+      display: flex;
+      justify-content: center;
+      gap: 5px;
     }
 
     .filter-btn {
@@ -213,13 +217,7 @@
     <input type="text" id="search-input" class="search-bar" placeholder="Search wallpapers..." />
   </div>
 
-  <div class="category-filters" id="category-filters">
-    <button class="filter-btn" onclick="filterByCategory('Nature')">Nature</button>
-    <button class="filter-btn" onclick="filterByCategory('Technology')">Technology</button>
-    <button class="filter-btn" onclick="filterByCategory('Space')">Space</button>
-    <button class="filter-btn" onclick="filterByCategory('Abstract')">Abstract</button>
-    <button class="filter-btn" onclick="resetFilters()">All</button>
-  </div>
+  <div class="category-filters" id="category-filters"></div>
 
   <div class="wallpapers" id="wallpaper-list"></div>
 
@@ -245,35 +243,35 @@
       { id: 10, title: "Lucky Day 2", category: "Anime", src: "10.png", lowsrc: "low10.png" },
       { id: 11, title: "Tea Pot Land 2", category: "Design", src: "11.png", lowsrc: "low11.png" },
       { id: 12, title: "Tea Pot Land 3", category: "Design", src: "12.png", lowsrc: "low12.png" },
-      { id: 13, title:  "Shop Keeper With customer 2", category: "Anime", lowsrc: "low13.png" },
-      { id: 14, title:  "Shop Keeper With customer 3", category: "Anime", src: "14.png", lowsrc: "low14.png" },
+      { id: 13, title: "Shop Keeper With customer 2", category: "Anime", src: "13.png", lowsrc: "low13.png" },
+      { id: 14, title: "Shop Keeper With customer 3", category: "Anime", src: "14.png", lowsrc: "low14.png" },
       { id: 15, title: "Cherry blossom", category: "Nature", src: "15.png", lowsrc: "low15.png" },
       { id: 16, title: "Cherry blossom 2", category: "Nature", src: "16.png", lowsrc: "low16.png" },
       { id: 17, title: "Cherry blossom 3", category: "Nature", src: "17.png", lowsrc: "low17.png" },
       { id: 18, title: "Train", category: "Vehicle", src: "18.png", lowsrc: "low18.png" },
       { id: 19, title: "Lucky Day 2", category: "Anime", src: "19.png", lowsrc: "low19.png" },
       { id: 20, title: "Library 3", category: "Design", src: "20.png", lowsrc: "low20.png" },
-      { id: 21, title:"Train 2", category: "Vehicle", src: "21.png", lowsrc: "low21.png" },
+      { id: 21, title: "Train 2", category: "Vehicle", src: "21.png", lowsrc: "low21.png" },
       { id: 22, title: "Train 3", category: "Vehicle", src: "22.png", lowsrc: "low22.png" },
       { id: 23, title: "1956 Chevrolet", category: "Vehicle", src: "23.png", lowsrc: "low23.png" },
       { id: 24, title: "1956 Chevrolet 2", category: "Vehicle", src: "24.png", lowsrc: "low24.png" },
       { id: 25, title: "1956 Chevrolet 3", category: "Vehicle", src: "25.png", lowsrc: "low25.png" },
-      { id: 26, title: "Ford Mustang", category: "CAr", src: "26.png", lowsrc: "low26.png" },
+      { id: 26, title: "Ford Mustang", category: "Car", src: "26.png", lowsrc: "low26.png" },
       { id: 27, title: "Ford Mustang 2", category: "Car", src: "27.png", lowsrc: "low27.png" },
       { id: 28, title: "Ford Mustang 3", category: "Car", src: "28.png", lowsrc: "low28.png" },
       { id: 29, title: "Wheat", category: "Nature", src: "29.png", lowsrc: "low29.png" },
       { id: 30, title: "Wheat 2", category: "Nature", src: "30.png", lowsrc: "low30.png" },
       { id: 31, title: "Wheat 3", category: "Nature", src: "31.png", lowsrc: "low31.png" },
       { id: 32, title: "Forest", category: "Nature", src: "32.png", lowsrc: "low32.png" },
-      { id: 33, title: "red vally", category: "Nature", src: "33.png", lowsrc: "low33.png" },
-      { id: 34, title: "red vally 2", category: "Nature", src: "34.png", lowsrc: "low34.png" },
-      { id: 35, title: "red vally 3", category: "Nature", src: "35.png", lowsrc: "low35.png" },
+      { id: 33, title: "Red Valley", category: "Nature", src: "33.png", lowsrc: "low33.png" },
+      { id: 34, title: "Red Valley 2", category: "Nature", src: "34.png", lowsrc: "low34.png" },
+      { id: 35, title: "Red Valley 3", category: "Nature", src: "35.png", lowsrc: "low35.png" },
       { id: 36, title: "Horse", category: "Nature", src: "36.png", lowsrc: "low36.png" },
       { id: 37, title: "Horse 2", category: "Nature", src: "37.png", lowsrc: "low37.png" },
       { id: 38, title: "Plant", category: "Nature", src: "38.png", lowsrc: "low38.png" },
       { id: 39, title: "Lantern", category: "Nature", src: "39.png", lowsrc: "low39.png" },
       { id: 40, title: "Light Glass", category: "Nature", src: "40.png", lowsrc: "low40.png" },
-      { id: 41, title: "lamborghini aventador ", category: "Car", src: "41.png", lowsrc: "low41.png" },
+      { id: 41, title: "Lamborghini Aventador", category: "Car", src: "41.png", lowsrc: "low41.png" },
       { id: 42, title: "Leaf", category: "Nature", src: "42.png", lowsrc: "low42.png" },
       { id: 43, title: "Leaf 2", category: "Nature", src: "43.png", lowsrc: "low43.png" },
       { id: 44, title: "Leaf 3", category: "Nature", src: "44.png", lowsrc: "low44.png" },
@@ -281,22 +279,22 @@
       { id: 46, title: "Leaf 5", category: "Nature", src: "46.png", lowsrc: "low46.png" },
       { id: 47, title: "Leaf 6", category: "Nature", src: "47.png", lowsrc: "low47.png" },
       { id: 48, title: "Leaf 7", category: "Nature", src: "48.png", lowsrc: "low48.png" },
-      { id: 49, title:"Ford Mustang 4", category: "Car", src: "49.png", lowsrc: "low49.png" },
-      { id: 50, title: "Forest 2", category: "Car", src: "50.png", lowsrc: "low50.png" },
-      { id: 51, title: "Leaf ", category: "Nature", src: "51.png", lowsrc: "low51.png" },
+      { id: 49, title: "Ford Mustang 4", category: "Car", src: "49.png", lowsrc: "low49.png" },
+      { id: 50, title: "Forest 2", category: "Nature", src: "50.png", lowsrc: "low50.png" },
+      { id: 51, title: "Leaf", category: "Nature", src: "51.png", lowsrc: "low51.png" },
       { id: 52, title: "Lake 2", category: "Nature", src: "52.png", lowsrc: "low52.png" },
-      { id: 53, title:  "Lake 3", category: "Nature", src: "53.png", lowsrc: "low53.png" },
-      { id: 54, title:  "Lake 4", category: "Nature", src: "54.png", lowsrc: "low54.png" },
-      { id: 55, title:  "Moon", category: "Space", src: "55.png", lowsrc: "low55.png" },
+      { id: 53, title: "Lake 3", category: "Nature", src: "53.png", lowsrc: "low53.png" },
+      { id: 54, title: "Lake 4", category: "Nature", src: "54.png", lowsrc: "low54.png" },
+      { id: 55, title: "Moon", category: "Space", src: "55.png", lowsrc: "low55.png" },
       { id: 56, title: "Moon 2", category: "Space", src: "56.png", lowsrc: "low56.png" },
-      { id: 57, title: "Under water", category: "Nature", src: "57.png", lowsrc: "low57.png" },
-      { id: 58, title: "Under water 2", category: "Nature", src: "58.png", lowsrc: "low58.png" },
+      { id: 57, title: "Under Water", category: "Nature", src: "57.png", lowsrc: "low57.png" },
+      { id: 58, title: "Under Water 2", category: "Nature", src: "58.png", lowsrc: "low58.png" },
       { id: 59, title: "Galaxy Nebula", category: "Space", src: "59.png", lowsrc: "low59.png" },
       { id: 60, title: "Galaxy Nebula 2", category: "Space", src: "60.png", lowsrc: "low60.png" },
       { id: 61, title: "Galaxy Nebula 3", category: "Space", src: "61.png", lowsrc: "low61.png" },
-      { id: 62, title: "Forest tree", category: "Nature", src: "62.png", lowsrc: "low62.png" },
-      { id: 63, title: "Forest tree 2", category: "Nature", src: "63.png", lowsrc: "low63.png" },
-      { id: 64, title: "Forest tree 3", category: "Nature", src: "64.png", lowsrc: "low64.png" }
+	  { id: 62, title: "Forest Tree", category: "Nature", src: "62.png", lowsrc: "low62.png" },
+      { id: 63, title: "Forest Tree 2", category: "Nature", src: "63.png", lowsrc: "low63.png" },
+      { id: 64, title: "Forest Tree 3", category: "Nature", src: "64.png", lowsrc: "low64.png" }
     ];
 
     const gallery = document.getElementById("wallpaper-list");
@@ -308,6 +306,27 @@
     const itemsPerPage = 12;
     let currentPage = 1;
     let currentCategory = 'All';
+    let currentSearchTerm = '';
+
+    function generateCategoryFilters() {
+      const categories = [...new Set(wallpapers.map(w => w.category))].sort();
+      const container = document.getElementById('category-filters');
+      container.innerHTML = '';
+      
+      categories.forEach(category => {
+        const button = document.createElement('button');
+        button.className = 'filter-btn';
+        button.textContent = category;
+        button.onclick = () => filterByCategory(category);
+        container.appendChild(button);
+      });
+
+      const allButton = document.createElement('button');
+      allButton.className = 'filter-btn';
+      allButton.textContent = 'All';
+      allButton.onclick = resetFilters;
+      container.appendChild(allButton);
+    }
 
     function renderWallpapers(data) {
       gallery.innerHTML = "";
@@ -318,12 +337,14 @@
       paginatedItems.forEach(wallpaper => {
         const div = document.createElement("div");
         div.className = "wallpaper-card";
-
         div.innerHTML = `
-          <img src="${convertToLowRes(wallpaper)}" alt="${wallpaper.title}" onclick="showPreview('${wallpaper.src}')">
+          <img src="${wallpaper.lowsrc}" alt="${wallpaper.title}" 
+               onclick="showPreview('${wallpaper.src}')"
+               onload="this.classList.add('loaded')">
           <div class="wallpaper-title">${wallpaper.title}</div>
           <div class="wallpaper-category">Category: ${wallpaper.category}</div>
-          <a href="${wallpaper.src}" download="${wallpaper.title}.png" class="download-button">Download</a>
+          <a href="${wallpaper.src}" download="${wallpaper.title}.png" 
+             class="download-button">Download</a>
         `;
         gallery.appendChild(div);
       });
@@ -341,72 +362,77 @@
         button.innerText = i;
         button.onclick = () => {
           currentPage = i;
-          renderWallpapers(filterWallpapers(wallpapers));
+          renderWallpapers(getFilteredData());
         };
+        if (i === currentPage) button.style.background = "#666";
         pagination.appendChild(button);
       }
     }
 
-    function convertToLowRes(wallpaper) {
-      return wallpaper.lowsrc || wallpaper.src;
+    function getFilteredData() {
+      let filtered = wallpapers;
+      
+      // Category filter
+      if (currentCategory !== 'All') {
+        filtered = filtered.filter(w => w.category === currentCategory);
+      }
+      
+      // Search filter
+      if (currentSearchTerm) {
+        const searchTerm = currentSearchTerm.toLowerCase();
+        filtered = filtered.filter(w => 
+          w.title.toLowerCase().includes(searchTerm) ||
+          w.category.toLowerCase().includes(searchTerm)
+        );
+      }
+      
+      return filtered;
+    }
+
+    function filterByCategory(category) {
+      currentCategory = category;
+      currentPage = 1;
+      renderWallpapers(getFilteredData());
+    }
+
+    function resetFilters() {
+      currentCategory = 'All';
+      currentPage = 1;
+      document.getElementById('search-input').value = '';
+      currentSearchTerm = '';
+      renderWallpapers(getFilteredData());
     }
 
     function showPreview(src) {
       modal.style.display = "flex";
       previewImage.src = src;
-      downloadLink.href = src; // Set the download link to the high-quality image URL
-      const imageName = src.split('/').pop(); // Extract the image name from the URL
-      downloadLink.download = imageName; // Set the download attribute to the image name
-      downloadLink.style.display = "block"; // Show the download button
+      downloadLink.href = src;
+      downloadLink.download = src.split('/').pop();
+      downloadLink.style.display = "block";
     }
 
     function closePreview() {
       modal.style.display = "none";
       previewImage.src = "";
-      downloadLink.style.display = "none"; // Hide the download button when closing the modal
+      downloadLink.style.display = "none";
     }
 
-    function filterByCategory(category) {
-      currentCategory = category;
-      currentPage = 1; // Reset to first page on category filter
-      renderWallpapers(filterWallpapers(wallpapers));
-    }
-
-    function resetFilters() {
-      currentCategory = 'All';
-      currentPage = 1; // Reset to first page on reset
-      renderWallpapers(wallpapers);
-    }
-
-    function filterWallpapers(data) {
-      if (currentCategory === 'All') {
-        return data;
-      }
-      return data.filter(w => w.category === currentCategory);
-    }
-
+    // Event Listeners
     document.getElementById("search-input").addEventListener("input", e => {
-      const keyword = e.target.value.toLowerCase();
-      const filtered = filterWallpapers(wallpapers).filter(w =>
-        w.title.toLowerCase().includes(keyword) ||
-        w.category.toLowerCase().includes(keyword)
-      );
-      currentPage = 1; // Reset to first page on search
-      renderWallpapers(filtered);
+      currentSearchTerm = e.target.value.trim();
+      currentPage = 1;
+      renderWallpapers(getFilteredData());
     });
 
-    // Initial render
+    // Initialization
+    generateCategoryFilters();
     renderWallpapers(wallpapers);
 
-    // Block dev tools
+    // DevTools Blocker
     document.addEventListener("contextmenu", e => e.preventDefault());
     document.onkeydown = e => {
-      if (
-        e.key === "F12" ||
-        (e.ctrlKey && e.shiftKey && ["I", "C", "J"].includes(e.key)) ||
-        (e.ctrlKey && e.key === "U")
-      ) {
-        return false;
+      if (e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I", "C", "J"].includes(e.key))) {
+        e.preventDefault();
       }
     };
   </script>
