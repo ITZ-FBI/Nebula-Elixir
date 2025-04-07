@@ -1,97 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Image Gallery</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wallpaper Showcase</title>
   <style>
     body {
-      font-family: sans-serif;
-      background: #f9f9f9;
+      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 20px;
+      background-color: #f0f0f0;
+    }
+    .header {
+      padding: 10px;
+      background-color: #333;
+      color: white;
+      text-align: center;
+    }
+    .search-bar {
+      margin: 15px;
+      text-align: center;
+    }
+    .search-bar input {
+      padding: 10px;
+      width: 60%;
+      max-width: 400px;
+      font-size: 16px;
+    }
+    .categories {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .categories button {
+      margin: 5px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+    }
+    .categories button:hover {
+      background-color: #666;
     }
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+      padding: 15px;
     }
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .card img {
-      max-width: 100%;
+    .wallpaper {
+      background-color: white;
       border-radius: 8px;
-    }
-    .title {
-      font-weight: bold;
-      margin: 10px 0 5px;
-    }
-    .download-btn {
-      margin-top: 10px;
-      padding: 8px 12px;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       cursor: pointer;
-      transition: background 0.2s;
+      transition: transform 0.2s;
     }
-    .download-btn:hover {
-      background: #0056b3;
+    .wallpaper:hover {
+      transform: scale(1.03);
+    }
+    .wallpaper img {
+      width: 100%;
+      display: block;
+    }
+    .meta {
+      padding: 10px;
+      font-size: 14px;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal img {
+      max-width: 90%;
+      max-height: 80%;
+    }
+    .modal .close {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      font-size: 30px;
+      color: white;
+      cursor: pointer;
+    }
+    .modal .download {
+      position: absolute;
+      bottom: 40px;
+      background: #fff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      text-decoration: none;
+      color: #000;
     }
   </style>
 </head>
 <body>
 
-  <h1>Image Gallery (Low-res Preview + HD Download)</h1>
-  <div class="gallery" id="gallery"></div>
+  <div class="header">
+    <h1>Wallpaper Gallery</h1>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="Search wallpapers by title or category...">
+  </div>
+
+  <div class="categories">
+    <button onclick="filterCategory('All')">All</button>
+    <button onclick="filterCategory('Anime')">Anime</button>
+    <button onclick="filterCategory('Nature')">Nature</button>
+    <button onclick="filterCategory('Technology')">Technology</button>
+  </div>
+
+  <div class="gallery" id="wallpaperGallery"></div>
+
+  <div class="modal" id="previewModal">
+    <span class="close" onclick="closePreview()">&times;</span>
+    <img id="previewImage" src="">
+    <a id="downloadLink" class="download" download>Download</a>
+  </div>
 
   <script>
-    const images = [
-      { id: 1, title: "Library", category: "Design", src: "1.png", lowsrc: "low1.png" },
-      { id: 2, title: "Flying pot", category: "Design", src: "2.png", lowsrc: "low2.png" },
-      { id: 3, title: "Library 2", category: "Design", src: "3.png", lowsrc: "low3.png" },
-      { id: 4, title: "Shopkeeper with customer", category: "Anime", src: "4.png", lowsrc: "low4.png" },
-      { id: 5, title: "Forest with stairs", category: "Nature", src: "5.png", lowsrc: "low5.png" },
-      // You can add the rest of your list here...
+    const wallpapers = [
+      {
+        id: 1,
+        title: "Sunset Over Mountains",
+        category: "Nature",
+        resolution: "1920x1080",
+        tags: ["sunset", "mountains", "sky"],
+        type: "JPG",
+        src: "images/1.jpg",
+        lowsrc: "images/lowres/1.jpg"
+      },
+      {
+        id: 2,
+        title: "City Lights",
+        category: "Technology",
+        resolution: "3840x2160",
+        tags: ["city", "night", "lights"],
+        type: "JPG",
+        src: "images/2.jpg",
+        lowsrc: "images/lowres/2.jpg"
+      },
+      // Add more wallpapers...
     ];
 
-    const gallery = document.getElementById('gallery');
+    const gallery = document.getElementById("wallpaperGallery");
+    const modal = document.getElementById("previewModal");
+    const previewImage = document.getElementById("previewImage");
+    const downloadLink = document.getElementById("downloadLink");
 
-    images.forEach(img => {
-      const card = document.createElement('div');
-      card.className = 'card';
+    function renderWallpapers(data) {
+      gallery.innerHTML = "";
+      data.forEach(wallpaper => {
+        const div = document.createElement("div");
+        div.className = "wallpaper";
+        div.innerHTML = `
+          <img src="${convertToLowRes(wallpaper)}" alt="${wallpaper.title}" onclick="showPreview('${wallpaper.src}')">
+          <div class="meta">
+            <strong>${wallpaper.title}</strong><br>
+            Category: ${wallpaper.category}<br>
+            Resolution: ${wallpaper.resolution}<br>
+            Type: ${wallpaper.type}
+          </div>
+        `;
+        gallery.appendChild(div);
+      });
+    }
 
-      const image = document.createElement('img');
-      image.src = img.lowsrc;
-      image.alt = img.title;
+    function convertToLowRes(wallpaper) {
+      return wallpaper.lowsrc || wallpaper.src;
+    }
 
-      const title = document.createElement('div');
-      title.className = 'title';
-      title.textContent = img.title;
+    function filterCategory(category) {
+      if (category === "All") {
+        renderWallpapers(wallpapers);
+      } else {
+        renderWallpapers(wallpapers.filter(w => w.category === category));
+      }
+    }
 
-      const button = document.createElement('button');
-      button.className = 'download-btn';
-      button.textContent = 'Download HD';
-      button.onclick = () => {
-        const link = document.createElement('a');
-        link.href = img.src;
-        link.download = img.src.split('/').pop(); // Downloads with original filename
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      };
+    function showPreview(src) {
+      modal.style.display = "flex";
+      previewImage.src = src;
+      downloadLink.href = src;
+    }
 
-      card.appendChild(image);
-      card.appendChild(title);
-      card.appendChild(button);
-      gallery.appendChild(card);
+    function closePreview() {
+      modal.style.display = "none";
+      previewImage.src = "";
+    }
+
+    document.getElementById("search").addEventListener("input", e => {
+      const keyword = e.target.value.toLowerCase();
+      const filtered = wallpapers.filter(w =>
+        w.title.toLowerCase().includes(keyword) ||
+        w.category.toLowerCase().includes(keyword)
+      );
+      renderWallpapers(filtered);
     });
-  </script>
 
+    // Initial render
+    renderWallpapers(wallpapers);
+
+    // Block dev tools
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.onkeydown = e => {
+      if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && ["I", "C", "J"].includes(e.key)) ||
+        (e.ctrlKey && e.key === "U")
+      ) {
+        return false;
+      }
+    };
+  </script>
 </body>
 </html>
