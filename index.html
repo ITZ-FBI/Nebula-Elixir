@@ -84,6 +84,7 @@
       position: relative;
       transition: transform 0.2s;
       width: 100%;
+      text-align: center;
     }
 
     .wallpaper-card:hover {
@@ -108,7 +109,6 @@
 
     .wallpaper-title,
     .wallpaper-category {
-      text-align: center;
       font-size: 14px;
       padding: 8px 0;
     }
@@ -118,17 +118,18 @@
       color: #aaa;
     }
 
-    .download-btn {
+    .download-button {
       display: inline-block;
-      background: #4caf50;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background-color: #007bff;
       color: white;
-      text-align: center;
-      padding: 8px 12px;
-      border-radius: 4px;
       text-decoration: none;
-      font-size: 14px;
-      margin: 10px;
-      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .download-button:hover {
+      background-color: #0056b3;
     }
 
     #preview-modal {
@@ -185,7 +186,7 @@
       }
 
       .filter-btn,
-      .download-btn {
+      .download-button {
         font-size: 12px;
         padding: 6px 10px;
       }
@@ -220,7 +221,7 @@
 
   <div id="preview-modal">
     <img id="preview-img" src="" alt="Preview" />
-    <a id="preview-download" class="download-btn" target="_blank" style="display: none;">Download High Quality Image</a>
+    <a id="preview-download" class="download-button" target="_blank" style="display: none;">Download High Quality Image</a>
     <button id="close-btn" onclick="closePreview()">Close</button>
   </div>
 
@@ -315,6 +316,7 @@
           <img src="${convertToLowRes(wallpaper)}" alt="${wallpaper.title}" onclick="showPreview('${wallpaper.src}')">
           <div class="wallpaper-title">${wallpaper.title}</div>
           <div class="wallpaper-category">Category: ${wallpaper.category}</div>
+          <a href="${wallpaper.src}" download="${wallpaper.title}.png" class="download-button">Download</a>
         `;
         gallery.appendChild(div);
       });
