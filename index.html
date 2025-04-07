@@ -213,7 +213,13 @@
     <input type="text" id="search-input" class="search-bar" placeholder="Search wallpapers..." />
   </div>
 
-  <div class="category-filters" id="category-filters"></div>
+  <div class="category-filters" id="category-filters">
+    <button class="filter-btn" onclick="filterByCategory('Nature')">Nature</button>
+    <button class="filter-btn" onclick="filterByCategory('Technology')">Technology</button>
+    <button class="filter-btn" onclick="filterByCategory('Space')">Space</button>
+    <button class="filter-btn" onclick="filterByCategory('Abstract')">Abstract</button>
+    <button class="filter-btn" onclick="resetFilters()">All</button>
+  </div>
 
   <div class="wallpapers" id="wallpaper-list"></div>
 
@@ -253,7 +259,7 @@
       { id: 24, title: "Abstract Shapes", category: "Abstract", src: "24.png", lowsrc: "low24.png" },
       { id: 25, title: "Foggy Mountains", category: "Nature", src: "25.png", lowsrc: "low25.png" },
       { id: 26, title: "Cyberpunk City", category: "Technology", src: "26.png", lowsrc: "low26.png" },
-      { id: 27, title: "Starry Ocean", category: "Space", src: "27.png", lowsrc: "low27.png" },
+      { id: 27, title: "Starry Ocean", category: "Nature", src: "27.png", lowsrc: "low27.png" },
       { id: 28, title: "Colorful Forest", category: "Nature", src: "28.png", lowsrc: "low28.png" },
       { id: 29, title: "Tech Landscape", category: "Technology", src: "29.png", lowsrc: "low29.png" },
       { id: 30, title: "Abstract Colors", category: "Abstract", src: "30.png", lowsrc: "low30.png" },
@@ -301,6 +307,7 @@
 
     const itemsPerPage = 12;
     let currentPage = 1;
+    let currentCategory = 'All';
 
     function renderWallpapers(data) {
       gallery.innerHTML = "";
@@ -334,7 +341,7 @@
         button.innerText = i;
         button.onclick = () => {
           currentPage = i;
-          renderWallpapers(wallpapers);
+          renderWallpapers(filterWallpapers(wallpapers));
         };
         pagination.appendChild(button);
       }
@@ -359,9 +366,28 @@
       downloadLink.style.display = "none"; // Hide the download button when closing the modal
     }
 
+    function filterByCategory(category) {
+      currentCategory = category;
+      currentPage = 1; // Reset to first page on category filter
+      renderWallpapers(filterWallpapers(wallpapers));
+    }
+
+    function resetFilters() {
+      currentCategory = 'All';
+      currentPage = 1; // Reset to first page on reset
+      renderWallpapers(wallpapers);
+    }
+
+    function filterWallpapers(data) {
+      if (currentCategory === 'All') {
+        return data;
+      }
+      return data.filter(w => w.category === currentCategory);
+    }
+
     document.getElementById("search-input").addEventListener("input", e => {
       const keyword = e.target.value.toLowerCase();
-      const filtered = wallpapers.filter(w =>
+      const filtered = filterWallpapers(wallpapers).filter(w =>
         w.title.toLowerCase().includes(keyword) ||
         w.category.toLowerCase().includes(keyword)
       );
